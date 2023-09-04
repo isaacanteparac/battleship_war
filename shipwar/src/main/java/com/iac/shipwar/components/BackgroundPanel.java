@@ -1,4 +1,4 @@
-package components;
+package com.iac.shipwar.components;
 
 import java.awt.Graphics;
 import java.awt.Image;

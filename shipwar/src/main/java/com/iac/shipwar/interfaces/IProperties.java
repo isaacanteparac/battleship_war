@@ -1,11 +1,11 @@
-package components;
+package com.iac.shipwar.interfaces;
 
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.util.Map;
 
-interface IProperties {
+public interface IProperties {
 
     default Component background_(Component component_, String hex) {
         component_.setBackground(Color.decode(hex));

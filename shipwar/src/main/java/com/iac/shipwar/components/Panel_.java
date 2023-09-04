@@ -1,8 +1,12 @@
-package components;
 
+package com.iac.shipwar.components;
+
+/**
+ *
+ * @author isaac
+ */
 import javax.swing.*;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 public class Panel_ {
     private JPanel panel;
@@ -12,14 +16,11 @@ public class Panel_ {
     protected int radius;
     protected int padding;
 
-    public Panel_(int w, int h, int p, String hex, int alpha) {
+    public Panel_(int w, int h, int p, String hex, int transparent) {
         this.width = w;
         this.height = h;
         this.padding = p;
         this.colorHex = hex;
-
-        // Inicializa un JFXPanel (necesario para usar JavaFX en Swing)
-       
 
         this.panel = new JPanel() {
             @Override
@@ -27,19 +28,18 @@ public class Panel_ {
                 super.paintComponent(g);
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-                Color colorWithAlpha = new Color(
+                Color colorWithTransparent = new Color(
                         Integer.parseInt(colorHex.substring(1, 3), 16),
                         Integer.parseInt(colorHex.substring(3, 5), 16),
                         Integer.parseInt(colorHex.substring(5, 7), 16),
-                        alpha
-                );
-                g2d.setColor(colorWithAlpha);
+                        transparent);
+                g2d.setColor(colorWithTransparent);
                 g2d.fillRoundRect(0, 0, getWidth(), getHeight(), radius, radius);
                 g2d.dispose();
             }
         };
 
-        size();
+        this.size();
     }
 
     private void size() {
@@ -51,9 +51,9 @@ public class Panel_ {
         this.padding = size;
     }
 
-    public Dimension getSizeWidthComponent(int heightComponent) {
-        int widthComponent = this.width - this.padding;
-        return new Dimension(widthComponent, heightComponent);
+    public int getSizeWidthComponent() {
+        int widthComponet = this.width - this.padding;
+        return widthComponet;
     }
 
     public void radiusBorder(int r) {
@@ -68,4 +68,5 @@ public class Panel_ {
     public void addComponent(Component c) {
         this.panel.add(c);
     }
+
 }
