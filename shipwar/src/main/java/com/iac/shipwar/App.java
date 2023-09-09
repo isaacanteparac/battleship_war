@@ -4,7 +4,7 @@
 
 package com.iac.shipwar;
 
-import com.iac.shipwar.components.Window;
+import com.iac.shipwar.components.UI;
 
 /**
  *
@@ -13,7 +13,7 @@ import com.iac.shipwar.components.Window;
 public class App {
 
     public static void main(String[] args) {
-        new Window("ship");
+        new UI();
     
     }
 }
