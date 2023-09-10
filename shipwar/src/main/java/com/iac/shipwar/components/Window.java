@@ -5,17 +5,20 @@ import java.awt.GridBagLayout;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import com.iac.shipwar.components.util.BackgroundPanel;
 import com.iac.shipwar.interfaces.IProperties;
 
 public class Window implements IProperties {
-  protected final int width = 1700;
-  protected final int height = 1000;
+  protected int width;
+  protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
 
-  public Window(String title) {
+  public Window(String title, int w, int h) {
+    this.width = w;
+    this.height = h;
     this.frame = new JFrame(title);
-    this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/b.jpg");
+    this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/merry.png");
     this.generateWindow();
   }
 

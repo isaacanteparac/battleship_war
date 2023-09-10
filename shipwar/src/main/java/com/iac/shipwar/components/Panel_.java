@@ -8,6 +8,7 @@ package com.iac.shipwar.components;
 import javax.swing.*;
 
 import com.iac.shipwar.data.PanelCharacteristic;
+import com.iac.shipwar.data.enums.Orientation;
 
 import java.awt.*;
 
@@ -15,10 +16,9 @@ public class Panel_ {
     private JPanel panel;
     protected PanelCharacteristic characteristic;
 
+    public Panel_(PanelCharacteristic characteristic) {
+        this.characteristic = characteristic;
 
-    public Panel_(PanelCharacteristic c) {
-        this.characteristic = c;
-      
         this.panel = new JPanel() {
             @Override
             protected void paintComponent(Graphics g) {
@@ -44,7 +44,6 @@ public class Panel_ {
         this.panel.setPreferredSize(new Dimension(this.characteristic.width(), this.characteristic.height()));
     }
 
-
     public int getSizeWidthComponent() {
         int widthComponet = this.characteristic.width() - this.characteristic.padding();
         return widthComponet;
@@ -54,9 +53,24 @@ public class Panel_ {
         return this.panel;
     }
 
-    public void addComponent(Component c) {
-        this.panel.add(c);
+    public void activateGrip(Orientation o) {
+        this.panel.setLayout((o == Orientation.CENTER) ? new GridBagLayout()
+                : (o == Orientation.HORIZONTAL_WH)
+                        ? new FlowLayout(FlowLayout.CENTER, this.characteristic.gap(), this.characteristic.gap())
+                        : (o == Orientation.HORIZONTAL_W)
+                                ? new FlowLayout(FlowLayout.CENTER, this.characteristic.gap(), 0)
+                                : (o == Orientation.HORIZONTAL_H)
+                                        ? new FlowLayout(FlowLayout.CENTER, 0, this.characteristic.gap())
+                                        : (o == Orientation.VERTICAL_LEFT)
+                                        ? new FlowLayout(FlowLayout.LEFT)
+                                        : null);
+
     }
+
+    public void addComponent(Component component) {
+        this.panel.add(component);
+    }
+
 
     public GridBagConstraints spacer() {
         GridBagConstraints gbc = new GridBagConstraints();

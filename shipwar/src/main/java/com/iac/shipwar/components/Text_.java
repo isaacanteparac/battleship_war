@@ -7,11 +7,13 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import com.iac.shipwar.data.ElementPosition;
+import com.iac.shipwar.data.enums.FontType;
+import com.iac.shipwar.data.enums.ElementPosition;
 
 public class Text_ {
     private JLabel label_;
     private String content;
+    private final double factor = 1.5;
     private int fontSize_ = 18;
     private int fontType = Font.PLAIN;
     private String fontFamily = "Arial";
@@ -19,15 +21,13 @@ public class Text_ {
     private String bg;
     private int align = SwingConstants.LEFT;
     private int width;
-    private int height;
+    private int height = (int) (this.fontSize_ * this.factor);
 
-    public Text_(String t, int width, int height) {
+    public Text_(String t, int width) {
         this.content = t;
         this.width = (int) width;
-        this.height = (int) height;
         this.label_ = new JLabel(this.content);
         default_();
-
     }
 
     private void default_() {
@@ -39,15 +39,12 @@ public class Text_ {
         this.label_.setFont(new Font(this.fontFamily, this.fontType, this.fontSize_));
         this.label_.setPreferredSize(new Dimension(this.width, this.height));
         this.label_.setHorizontalAlignment(this.align);
-
     }
 
     public void setAling(ElementPosition p) {
         this.align = (p == ElementPosition.CENTER) ? SwingConstants.CENTER
                 : (p == ElementPosition.RIGHT) ? SwingConstants.RIGHT : SwingConstants.LEFT;
-
         fontUpdate();
-
     }
 
     public void setBackground_(String hex) {
@@ -69,11 +66,14 @@ public class Text_ {
 
     public void setSize(int s) {
         this.fontSize_ = (int) s;
+        this.height = (int) (this.fontSize_ * this.factor);
         fontUpdate();
     }
 
-    public void setType(int t) {
-        this.fontType = t;
+    public void setType(FontType f) {
+        this.fontType = (f == FontType.BOLD) ? Font.BOLD
+                : (f == FontType.ITALIC) ? Font.ITALIC : Font.PLAIN;
+
         fontUpdate();
 
     }
