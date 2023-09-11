@@ -13,29 +13,26 @@ public class Window implements IProperties {
   protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
+  protected String img = "f.jpg";
 
   public Window(String title, int w, int h) {
     this.width = w;
     this.height = h;
     this.frame = new JFrame(title);
-    this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/merry.png");
+    this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/"+img);
     this.generateWindow();
   }
 
   private void generateWindow() {
     this.size_(this.frame, this.width, this.height);
     this.size_(this.panelMain, this.width, this.height);
-    this.background_(this.panelMain, "#202124");
-
+    this.background_(this.panelMain, "#000000");
     this.frame.add(this.panelMain);
     this.frame.setResizable(false);
     this.frame.setVisible(true);
     this.frame.setLocationRelativeTo(null);
-
     frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
     this.panelMain.setLayout(new GridBagLayout());
-
   }
 
   public JPanel getPanel() {

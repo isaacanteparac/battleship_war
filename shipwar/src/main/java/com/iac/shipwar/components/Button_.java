@@ -20,9 +20,7 @@ public class Button_ {
                 Graphics2D g2d = (Graphics2D) g.create();
                 g2d.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
                 g2d.setColor(Color.decode(colorHex));
-                boolean isClicked = getModel().isPressed();
-                int borderRadius = isClicked ?  (int)rounded/2: rounded;
-                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), borderRadius, borderRadius);
+                g2d.fillRoundRect(0, 0, getWidth(), getHeight(), rounded, rounded);
                 g2d.dispose();
             }
         };
@@ -38,8 +36,24 @@ public class Button_ {
         this.button.setPreferredSize(new Dimension(width, height));
     }
 
-    public void setColorBg(String hex){
+    public void setColorBg(String hex) {
         this.colorHex = hex;
+    }
+
+    public void setWidth(int w) {
+        this.width = w;
+        this.button.setPreferredSize(new Dimension(width, height));
+
+    }
+
+    public void setHeight(int h) {
+        this.height = h;
+        this.button.setPreferredSize(new Dimension(width, height));
+
+    }
+
+    public void setRounded(int r) {
+        this.rounded = r;
     }
 
     public void add(Component component) {

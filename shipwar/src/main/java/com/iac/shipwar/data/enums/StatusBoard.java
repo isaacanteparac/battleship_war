@@ -5,4 +5,8 @@ public enum StatusBoard {
     SHIP,
     DESTROYED,
     FAILED,
+    ATTACK,
+    ROUTE,
+    
+
 }

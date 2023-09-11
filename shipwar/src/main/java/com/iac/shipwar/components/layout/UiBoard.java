@@ -23,39 +23,32 @@ public class UiBoard {
     public UiBoard(Panel_ panel, String title, String hex) {
         this.container = panel;
         this.colorHex = hex;
-        
 
         title(title);
-        createButton(Row.R1);
-        createButton(Row.R2);
-        createButton(Row.R3);
-        createButton(Row.R4);
-        createButton(Row.R5);
-        createButton(Row.R6);
-        createButton(Row.R7);
-        createButton(Row.R8);
+        for (Row row : Row.values()) {
+            createButton(row);
+        }
     }
 
-    private void title(String text){
+    private void title(String text) {
         Text_ t = new Text_(text, this.container.getSizeWidthComponent());
-        //t.setColor("#FFFFFF");
         t.setSize(30);
         t.setAling(ElementPosition.CENTER);
-                this.container.addComponent(t.getLabel());
+        this.container.addComponent(t.getLabel());
 
     }
 
     private void createButton(Row row) {
         Panel_ box = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 80, 0,
-                0, 0, 10,
+                0, 0, 15,
                 0, 0,
                 "#000000", this.container.getPanel()));
         Map<Column, Button_> buttons = new HashMap<Column, Button_>();
         for (Column c : Column.values()) {
             Button_ b = new Button_();
-            Text_ t = new Text_(row+":" + c, 40);
-            t.setColor("#003366");
+            Text_ t = new Text_(row + ":" + c, 40);
             b.add(t.getLabel());
+            b.setRounded(55);
             b.setColorBg(this.colorHex);
             buttons.put(c, b);
             box.addComponent(b.geButton());
@@ -63,6 +56,11 @@ public class UiBoard {
         box.activateGrip(Orientation.HORIZONTAL_W);
         this.rButton.put(row, buttons);
         this.container.addComponent(box.getPanel());
+    }
+
+    public void changeColor(Row r, Column c, String h) {
+        Button_ button = this.rButton.get(r).get(c);
+        button.setColorBg(h);
     }
 
 }
