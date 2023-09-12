@@ -7,6 +7,6 @@ public record ShipCharacteristic(
         String screenName,
         String color,
         int size,
-        int number
+        int number_
         ) {
 }

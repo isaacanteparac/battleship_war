@@ -13,7 +13,7 @@ public class Window implements IProperties {
   protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
-  protected String img = "f.jpg";
+  protected String img = "b.jpg";
 
   public Window(String title, int w, int h) {
     this.width = w;
@@ -26,7 +26,7 @@ public class Window implements IProperties {
   private void generateWindow() {
     this.size_(this.frame, this.width, this.height);
     this.size_(this.panelMain, this.width, this.height);
-    this.background_(this.panelMain, "#000000");
+    this.background_(this.panelMain, "#353940");
     this.frame.add(this.panelMain);
     this.frame.setResizable(false);
     this.frame.setVisible(true);

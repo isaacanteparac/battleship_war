@@ -4,7 +4,6 @@ import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-
 import com.iac.shipwar.components.Panel_;
 import com.iac.shipwar.components.Text_;
 import com.iac.shipwar.data.PanelCharacteristic;
@@ -26,7 +25,8 @@ public class UiInformation {
     protected final int fontSizeTitle = 20;
     protected final int boxLabelSize = 60;
     protected final String bgBox = "#FFFFFF";
-    protected final String fontColor = "#2d2e2f";
+    protected final String titleFontColor = "#2d2e2f";
+    protected final int transparencyBox = 255;
 
     public UiInformation(Panel_ p, Map<ShipSize, ShipCharacteristic> sc) {
         this.container = p;
@@ -35,17 +35,18 @@ public class UiInformation {
         this.texts.put(Modifier.INMUTABLE, null);
         this.texts.put(Modifier.MUTABLE, null);
 
-        addMap();
-        // this.container.addComponent(immutableText("Estado", ElementPosition.CENTER,
-        // this.fontSizeTitle).getLabel());
+        data();
+        //this.container.addComponent(immutableText("Estado", ElementPosition.CENTER,
+        //this.fontSizeTitle).getLabel());
 
+        //boxLabel(StatusBoard.SCORE, this.boxLabelSize);
         addBox(Modifier.INMUTABLE, StatusBoard.SHIP, 200);
-        boxLabel(StatusBoard.SCORE, this.boxLabelSize);
+
+        addBox(Modifier.INMUTABLE, StatusBoard.ATTACK, 155);
         boxLabel(StatusBoard.DESTROYED, this.boxLabelSize);
         boxLabel(StatusBoard.FAILED, this.boxLabelSize);
         addBox(Modifier.INMUTABLE, StatusBoard.ROUTE, 115);
 
-        addBox(Modifier.INMUTABLE, StatusBoard.ATTACK, 115);
         shipColor();
     }
 
@@ -53,7 +54,7 @@ public class UiInformation {
         addBox(Modifier.INMUTABLE, statusBoard, h);// 75
         this.texts.get(Modifier.MUTABLE).get(statusBoard)
                 .setWidth(this.box.get(statusBoard).getSizeWidthComponent());
-        this.texts.get(Modifier.MUTABLE).get(statusBoard).setColor(this.fontColor);
+        this.texts.get(Modifier.MUTABLE).get(statusBoard).setColor(this.titleFontColor);
 
         this.box.get(statusBoard)
                 .addComponent(this.texts.get(Modifier.MUTABLE).get(statusBoard).getLabel());
@@ -71,7 +72,7 @@ public class UiInformation {
     private void addBox(Modifier m, StatusBoard sb, int height) {
         Panel_ moment = new Panel_(
                 new PanelCharacteristic(this.container.getSizeWidthComponent(), (height + this.factor), 20,
-                        255, 40, 20,
+                        this.transparencyBox, 40, 20,
                         0, 0,
                         this.bgBox, this.container.getPanel()));
 
@@ -81,10 +82,9 @@ public class UiInformation {
         this.container.addComponent(this.box.get(sb).getPanel());
     }
 
-    private void addMap() {
+    private void data() {
         this.texts.put(Modifier.INMUTABLE, new HashMap<StatusBoard, Text_>() {
             {
-                put(StatusBoard.SCORE, immutableText("Puntuacion:", ElementPosition.LEFT, fontSizeSubtittle));
                 put(StatusBoard.SHIP, immutableText("Barcos:", ElementPosition.LEFT, fontSizeSubtittle));
                 put(StatusBoard.DESTROYED, immutableText("Destruidos:", ElementPosition.LEFT, fontSizeSubtittle));
                 put(StatusBoard.FAILED, immutableText("Fallados:", ElementPosition.LEFT, fontSizeSubtittle));
@@ -96,7 +96,6 @@ public class UiInformation {
 
         this.texts.put(Modifier.MUTABLE, new HashMap<StatusBoard, Text_>() {
             {
-                put(StatusBoard.SCORE, new Text_("0000", container.getSizeWidthComponent()));
                 put(StatusBoard.DESTROYED, new Text_("0000", container.getSizeWidthComponent()));
                 put(StatusBoard.FAILED, new Text_("0000", container.getSizeWidthComponent()));
             }
@@ -104,17 +103,15 @@ public class UiInformation {
     }
 
     private void shipColor() {
-
         for (Map.Entry<ShipSize, ShipCharacteristic> element : this.shipsCharacteristic.entrySet()) {
-
             ShipCharacteristic characteristic = element.getValue();
             Panel_ moment = new Panel_(
                     new PanelCharacteristic(this.box.get(StatusBoard.SHIP).getSizeWidthComponent(), 50, 0,
                             0, 40, 0,
                             0, 0,
                             "#FFFFFF", this.box.get(StatusBoard.SHIP).getPanel()));
-            Text_ t = new Text_(characteristic.screenName(), 100);
-            t.setColor(this.fontColor);
+            Text_ t = new Text_((characteristic.screenName()+"-"+String.valueOf(characteristic.number_())), 100);//1000
+            t.setColor(this.titleFontColor);
             moment.addComponent(t.getLabel());
             for (int i = 1; i <= characteristic.size(); i++) {
                 moment.addComponent(new Panel_(new PanelCharacteristic(40, 40, 0,
@@ -124,10 +121,8 @@ public class UiInformation {
             }
             moment.activateGrip(Orientation.VERTICAL_LEFT);
             this.box.get(StatusBoard.SHIP).addComponent(moment.getPanel());
-
         }
     }
-
 
     public void addComponentBox(Component c, StatusBoard sb) {
         this.box.get(sb).addComponent(c);

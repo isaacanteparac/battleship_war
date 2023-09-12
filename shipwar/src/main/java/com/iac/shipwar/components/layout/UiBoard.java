@@ -16,13 +16,15 @@ import com.iac.shipwar.data.enums.Row;
 
 public class UiBoard {
     protected Panel_ container;
-    protected String colorHex;
+    protected String bgColor;
+    protected String fontColor;
     protected Map<Row, Panel_> boxButton = new HashMap<Row, Panel_>();
     protected Map<Row, Map<Column, Button_>> rButton = new HashMap<Row, Map<Column, Button_>>();
 
-    public UiBoard(Panel_ panel, String title, String hex) {
+    public UiBoard(Panel_ panel, String title, String bg, String fcolor) {
         this.container = panel;
-        this.colorHex = hex;
+        this.bgColor = bg;
+        this.fontColor = fcolor;
 
         title(title);
         for (Row row : Row.values()) {
@@ -34,6 +36,7 @@ public class UiBoard {
         Text_ t = new Text_(text, this.container.getSizeWidthComponent());
         t.setSize(30);
         t.setAling(ElementPosition.CENTER);
+        t.setColor("#000000");
         this.container.addComponent(t.getLabel());
 
     }
@@ -47,9 +50,10 @@ public class UiBoard {
         for (Column c : Column.values()) {
             Button_ b = new Button_();
             Text_ t = new Text_(row + ":" + c, 40);
+            t.setColor(this.fontColor);
             b.add(t.getLabel());
-            b.setRounded(55);
-            b.setColorBg(this.colorHex);
+            b.setRounded(40);
+            b.setColorBg(this.bgColor);
             buttons.put(c, b);
             box.addComponent(b.geButton());
         }
@@ -61,6 +65,7 @@ public class UiBoard {
     public void changeColor(Row r, Column c, String h) {
         Button_ button = this.rButton.get(r).get(c);
         button.setColorBg(h);
+        System.out.println("change color");
     }
 
 }

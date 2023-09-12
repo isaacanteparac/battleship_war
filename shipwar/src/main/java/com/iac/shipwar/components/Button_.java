@@ -38,6 +38,8 @@ public class Button_ {
 
     public void setColorBg(String hex) {
         this.colorHex = hex;
+        this.button.setBackground(Color.decode(hex));
+
     }
 
     public void setWidth(int w) {
