@@ -1,4 +1,4 @@
-package com.iac.shipwar.data;
+package com.iac.shipwar.models.dataclass;
 
 import javax.swing.JPanel;
 

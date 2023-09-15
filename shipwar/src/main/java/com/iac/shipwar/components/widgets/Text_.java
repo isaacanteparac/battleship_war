@@ -1,4 +1,4 @@
-package com.iac.shipwar.components;
+package com.iac.shipwar.components.widgets;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -7,15 +7,15 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-import com.iac.shipwar.data.enums.FontType;
-import com.iac.shipwar.data.enums.ElementPosition;
+import com.iac.shipwar.models.enums.FontType;
+import com.iac.shipwar.models.enums.AlingText;
 
 public class Text_ {
     private JLabel label_;
     private String content;
     private final double factor = 1.5;
     private int fontSize_ = 18;
-    private int fontType = Font.PLAIN;
+    private int fontType = FontType.PLAIN.getValue();
     private String fontFamily = "Arial";
     private String colorHex = "#000000";
     private String bg;
@@ -41,9 +41,8 @@ public class Text_ {
         this.label_.setHorizontalAlignment(this.align);
     }
 
-    public void setAling(ElementPosition p) {
-        this.align = (p == ElementPosition.CENTER) ? SwingConstants.CENTER
-                : (p == ElementPosition.RIGHT) ? SwingConstants.RIGHT : SwingConstants.LEFT;
+    public void setAling(AlingText p) {
+        this.align = p.get();
         fontUpdate();
     }
 
@@ -71,9 +70,7 @@ public class Text_ {
     }
 
     public void setType(FontType f) {
-        this.fontType = (f == FontType.BOLD) ? Font.BOLD
-                : (f == FontType.ITALIC) ? Font.ITALIC : Font.PLAIN;
-
+        this.fontType = f.getValue();
         fontUpdate();
 
     }

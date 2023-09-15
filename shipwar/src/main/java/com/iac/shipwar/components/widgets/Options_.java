@@ -1,9 +1,10 @@
-package com.iac.shipwar.components;
+package com.iac.shipwar.components.widgets;
 
 import java.awt.*;
 
-import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
+
+import com.iac.shipwar.models.enums.SubcomponentOrientation;
 
 public class Options_<T extends Enum<T>> {
 
@@ -18,15 +19,30 @@ public class Options_<T extends Enum<T>> {
         T[] opciones = enumClass.getEnumConstants();
         this.boxOptions = new JComboBox<>(opciones);
         default_();
-
         size();
         
+    }
+
+    public void addPanel(Panel_ panel){
+        panel.addComponent(this.boxOptions);
+        panel.activateGrip(SubcomponentOrientation.CENTER);
     }
 
     private void size(){
         this.boxOptions.setOpaque(false);
         this.boxOptions.setPreferredSize(new Dimension(width, height));
+    }
 
+
+    public void setWidth(int width){
+        this.width = width;
+        this.boxOptions.setPreferredSize(new Dimension(width, height));
+    }
+
+
+    public void setHeight(int height){
+        this.height = height;
+        this.boxOptions.setPreferredSize(new Dimension(width, height));
     }
 
     private void default_() {
@@ -42,4 +58,6 @@ public class Options_<T extends Enum<T>> {
     public JComboBox<T> getComboBox() {
         return this.boxOptions;
     }
+
+
 }

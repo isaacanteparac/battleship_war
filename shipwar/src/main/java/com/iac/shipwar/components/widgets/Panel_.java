@@ -1,5 +1,5 @@
 
-package com.iac.shipwar.components;
+package com.iac.shipwar.components.widgets;
 
 /**
  *
@@ -7,8 +7,8 @@ package com.iac.shipwar.components;
  */
 import javax.swing.*;
 
-import com.iac.shipwar.data.PanelCharacteristic;
-import com.iac.shipwar.data.enums.Orientation;
+import com.iac.shipwar.models.dataclass.PanelCharacteristic;
+import com.iac.shipwar.models.enums.SubcomponentOrientation;
 
 import java.awt.*;
 
@@ -53,15 +53,15 @@ public class Panel_ {
         return this.panel;
     }
 
-    public void activateGrip(Orientation o) {
-        this.panel.setLayout((o == Orientation.CENTER) ? new GridBagLayout()
-                : (o == Orientation.HORIZONTAL_WH)
+    public void activateGrip(SubcomponentOrientation o) {
+        this.panel.setLayout((o == SubcomponentOrientation.CENTER) ? new GridBagLayout()
+                : (o == SubcomponentOrientation.HORIZONTAL_WH)
                         ? new FlowLayout(FlowLayout.CENTER, this.characteristic.gap(), this.characteristic.gap())
-                        : (o == Orientation.HORIZONTAL_W)
+                        : (o == SubcomponentOrientation.HORIZONTAL_W)
                                 ? new FlowLayout(FlowLayout.CENTER, this.characteristic.gap(), 0)
-                                : (o == Orientation.HORIZONTAL_H)
+                                : (o == SubcomponentOrientation.HORIZONTAL_H)
                                         ? new FlowLayout(FlowLayout.CENTER, 0, this.characteristic.gap())
-                                        : (o == Orientation.VERTICAL_LEFT)
+                                        : (o == SubcomponentOrientation.VERTICAL_LEFT)
                                         ? new FlowLayout(FlowLayout.LEFT)
                                         : null);
 
@@ -71,6 +71,10 @@ public class Panel_ {
         this.panel.add(component);
     }
 
+
+    public void visible(boolean v){
+        this.panel.setVisible(v);
+    }
 
     public GridBagConstraints spacer() {
         GridBagConstraints gbc = new GridBagConstraints();

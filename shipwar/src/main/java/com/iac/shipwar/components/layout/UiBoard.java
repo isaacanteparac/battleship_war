@@ -5,14 +5,14 @@ import java.util.Map;
 
 import javax.swing.JButton;
 
-import com.iac.shipwar.components.Button_;
-import com.iac.shipwar.components.Panel_;
-import com.iac.shipwar.components.Text_;
-import com.iac.shipwar.data.PanelCharacteristic;
-import com.iac.shipwar.data.enums.Column;
-import com.iac.shipwar.data.enums.ElementPosition;
-import com.iac.shipwar.data.enums.Orientation;
-import com.iac.shipwar.data.enums.Row;
+import com.iac.shipwar.components.widgets.Button_;
+import com.iac.shipwar.components.widgets.Panel_;
+import com.iac.shipwar.components.widgets.Text_;
+import com.iac.shipwar.models.dataclass.PanelCharacteristic;
+import com.iac.shipwar.models.enums.Column;
+import com.iac.shipwar.models.enums.AlingText;
+import com.iac.shipwar.models.enums.SubcomponentOrientation;
+import com.iac.shipwar.models.enums.Row;
 
 public class UiBoard {
     protected Panel_ container;
@@ -32,32 +32,36 @@ public class UiBoard {
         }
     }
 
+    public Panel_ getContainer() {
+        return this.container;
+    }
+
     private void title(String text) {
         Text_ t = new Text_(text, this.container.getSizeWidthComponent());
         t.setSize(30);
-        t.setAling(ElementPosition.CENTER);
-        t.setColor("#000000");
+        t.setAling(AlingText.CENTER);
+        t.setColor("#FFFFFF");
         this.container.addComponent(t.getLabel());
 
     }
 
     private void createButton(Row row) {
-        Panel_ box = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 80, 0,
-                0, 0, 15,
+        Panel_ box = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 70, 0,
+                0, 0, 5,
                 0, 0,
-                "#000000", this.container.getPanel()));
+                "#FFFFFF", this.container.getPanel()));
         Map<Column, Button_> buttons = new HashMap<Column, Button_>();
         for (Column c : Column.values()) {
             Button_ b = new Button_();
             Text_ t = new Text_(row + ":" + c, 40);
             t.setColor(this.fontColor);
             b.add(t.getLabel());
-            b.setRounded(40);
+            b.setRounded(30);
             b.setColorBg(this.bgColor);
             buttons.put(c, b);
             box.addComponent(b.geButton());
         }
-        box.activateGrip(Orientation.HORIZONTAL_W);
+        box.activateGrip(SubcomponentOrientation.HORIZONTAL_W);
         this.rButton.put(row, buttons);
         this.container.addComponent(box.getPanel());
     }

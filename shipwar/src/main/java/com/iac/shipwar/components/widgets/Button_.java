@@ -1,4 +1,4 @@
-package com.iac.shipwar.components;
+package com.iac.shipwar.components.widgets;
 
 import javax.swing.JButton;
 

@@ -1,6 +1,6 @@
-package com.iac.shipwar.data.enums;
+package com.iac.shipwar.models.enums;
 
-public enum Orientation {
+public enum SubcomponentOrientation {
     CENTER,
     HORIZONTAL_WH,
     HORIZONTAL_W,

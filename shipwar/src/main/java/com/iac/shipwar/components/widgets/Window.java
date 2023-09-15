@@ -1,4 +1,4 @@
-package com.iac.shipwar.components;
+package com.iac.shipwar.components.widgets;
 
 import java.awt.GridBagLayout;
 
@@ -20,13 +20,14 @@ public class Window implements IProperties {
     this.height = h;
     this.frame = new JFrame(title);
     this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/"+img);
+    //this.panelMain = new JPanel();
     this.generateWindow();
   }
 
   private void generateWindow() {
     this.size_(this.frame, this.width, this.height);
     this.size_(this.panelMain, this.width, this.height);
-    this.background_(this.panelMain, "#353940");
+    this.background_(this.panelMain, "#024ac0");
     this.frame.add(this.panelMain);
     this.frame.setResizable(false);
     this.frame.setVisible(true);

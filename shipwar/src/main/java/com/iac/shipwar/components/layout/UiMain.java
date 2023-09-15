@@ -3,29 +3,23 @@ package com.iac.shipwar.components.layout;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.iac.shipwar.components.Panel_;
-import com.iac.shipwar.components.Window;
-import com.iac.shipwar.data.PanelCharacteristic;
-import com.iac.shipwar.data.ShipCharacteristic;
-import com.iac.shipwar.data.enums.MainPanels;
-import com.iac.shipwar.data.enums.ShipSize;
-import com.iac.shipwar.data.enums.StatusBoard;
+import com.iac.shipwar.components.widgets.Panel_;
+import com.iac.shipwar.components.widgets.Window;
+import com.iac.shipwar.controllers.Attack;
+import com.iac.shipwar.controllers.Coordinates;
+import com.iac.shipwar.models.dataclass.PanelCharacteristic;
+import com.iac.shipwar.models.enums.MainPanels;
+import com.iac.shipwar.models.enums.Dashboard;
 
 public class UiMain {
     protected Window windows;
-    protected final int sizeBoardWH = 750;
+    protected final int sizeBoardW = 650;
+    protected final int sizeBoardH = 680;
     protected Map<MainPanels, Panel_> panels = new HashMap<MainPanels, Panel_>();
     protected final Map<MainPanels, PanelCharacteristic> panelProperties = new HashMap<MainPanels, PanelCharacteristic>();
-    protected final int transparency = 80;
-    protected final String bgPanels = "#FFFFFF";// #eff3f7
-    protected final Map<ShipSize, ShipCharacteristic> shipsC = new HashMap<ShipSize, ShipCharacteristic>() {
-        {
-            put(ShipSize.SMALL, new ShipCharacteristic(ShipSize.SMALL, "Pequeño", "#045cfb", 1, 5));
-            put(ShipSize.MEDIUM, new ShipCharacteristic(ShipSize.MEDIUM, "Mediano", "#a304fb", 2, 3));
-            put(ShipSize.BIG, new ShipCharacteristic(ShipSize.BIG, "Grande", "#5cfb04", 3, 2));
+    protected final int transparency = 70;
+    protected final String bgPanels = "#FFFFFF";
 
-        }
-    };
 
     public UiMain() {
         generatePanelsMain();
@@ -37,35 +31,39 @@ public class UiMain {
         this.windows = new Window("Barquitos Peleadores", 1905, 1000);
         createdPanel(MainPanels.INFORMATION,
                 new PanelCharacteristic(300, 900, 20,
-                        this.transparency, 60, 10,
+                        0, 60, 10,
                         0, 0,
                         this.bgPanels, this.windows.getPanel()));
 
-        createdPanel(MainPanels.MYBOARD,
-                new PanelCharacteristic(this.sizeBoardWH, this.sizeBoardWH, 20,
-                        this.transparency, 60, 15,
-                        1, 0,
-                        this.bgPanels, this.windows.getPanel()));
+        bulidBoard(MainPanels.MYBOARD);
+        bulidBoard(MainPanels.ENEMYBOARD);
 
-        createdPanel(MainPanels.ENEMYBOARD,
-                new PanelCharacteristic(this.sizeBoardWH, this.sizeBoardWH, 20,
-                        this.transparency, 60, 10,
-                        2, 0,
-                        this.bgPanels, this.windows.getPanel()));
     }
 
     private void generateComponents() {
-        final UiInformation uiInformation = new UiInformation(this.panels.get(MainPanels.INFORMATION), shipsC);
-        final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD), "Yo", "#181a1b", "#FFFFFF");// d19bfe
-        final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD), "Enemigo", "#fbd404", "#000000");
-        final UiInput uiInput = new UiInput(uiBoardEnemy);
-        uiInput.mountComponentRoute(uiInformation.getBox(StatusBoard.ROUTE));
-        uiInput.mountComponentAttack(uiInformation.getBox(StatusBoard.ATTACK));
-        uiInformation.updateTextsModifier(StatusBoard.FAILED, "000");
+        final UiDashboard dashboard = new UiDashboard(this.panels.get(MainPanels.INFORMATION));
+        final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD), MainPanels.MYBOARD.getDisplayName(),
+                "#114db1", "#FFFFFF");// d19bfe
+        final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
+                MainPanels.ENEMYBOARD.getDisplayName(), "#b1114d", "#FFFFFF");
+
+        final Attack attack = new Attack(uiBoardEnemy, dashboard);
+        final Coordinates coordinates = new Coordinates(this.panels, dashboard);
+
+        this.panels.get(MainPanels.ENEMYBOARD).visible(false);
+        dashboard.updateTextsModifier(Dashboard.FAILED, "000");
     }
 
     public Map<MainPanels, Panel_> getMapPanels() {
         return this.panels;
+    }
+
+    private void bulidBoard(MainPanels board) {
+        createdPanel(board,
+                new PanelCharacteristic(this.sizeBoardW, this.sizeBoardH, 20,
+                        this.transparency, 60, 15,
+                        2, 0,
+                        this.bgPanels, this.windows.getPanel()));
     }
 
     private void createdPanel(MainPanels name, PanelCharacteristic properties) {
