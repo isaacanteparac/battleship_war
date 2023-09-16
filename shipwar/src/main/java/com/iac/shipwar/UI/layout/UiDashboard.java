@@ -1,11 +1,11 @@
-package com.iac.shipwar.components.layout;
+package com.iac.shipwar.UI.layout;
 
 import java.awt.Component;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.iac.shipwar.components.widgets.Panel_;
-import com.iac.shipwar.components.widgets.Text_;
+import com.iac.shipwar.UI.widgets.Panel_;
+import com.iac.shipwar.UI.widgets.Text_;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.AlingText;
 import com.iac.shipwar.models.enums.FontType;
@@ -22,7 +22,7 @@ public class UiDashboard {
     protected final int fontSizeSubtittle = 18;
     protected final int fontSizeTitle = 20;
     protected final int boxLabelSize = 60;
-    protected final String bgBox = "#e8effc";
+    protected final String bgBox = "#e6e6e6";
     protected final String fontColor = "#000000";
     protected final String titleFontColor = "#1560dd";
     protected final int transparencyBox = 255;

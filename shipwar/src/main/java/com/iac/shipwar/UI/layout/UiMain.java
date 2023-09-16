@@ -1,12 +1,12 @@
-package com.iac.shipwar.components.layout;
+package com.iac.shipwar.UI.layout;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import com.iac.shipwar.components.widgets.Panel_;
-import com.iac.shipwar.components.widgets.Window;
-import com.iac.shipwar.controllers.Attack;
-import com.iac.shipwar.controllers.Coordinates;
+import com.iac.shipwar.UI.components.Attack;
+import com.iac.shipwar.UI.widgets.Panel_;
+import com.iac.shipwar.UI.widgets.Window;
+import com.iac.shipwar.controllers.CoordenadasCtrl;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.MainPanels;
 
@@ -30,9 +30,9 @@ public class UiMain {
         this.windows = new Window("Barquitos Peleadores", 1600, 850);
         createdPanel(MainPanels.INFORMATION,
                 new PanelCharacteristic(250, 700, 20,
-                        0, 60, 10,
+                        255, 60, 10,
                         0, 0,
-                        this.bgPanels, this.windows.getPanel()));
+                        "#FFFFFF", this.windows.getPanel()));
 
         bulidBoard(MainPanels.MYBOARD, 1);
         bulidBoard(MainPanels.ENEMYBOARD,2);
@@ -48,9 +48,9 @@ public class UiMain {
                 
 
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
-        final Coordinates coordinates = new Coordinates(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
+        final CoordenadasCtrl coordinates = new CoordenadasCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
 
-        this.panels.get(MainPanels.ENEMYBOARD).visible(false);
+        //this.panels.get(MainPanels.ENEMYBOARD).visible(false);
         //dashboard.updateTextsModifier(Dashboard.FAILED, "000");
     }
 

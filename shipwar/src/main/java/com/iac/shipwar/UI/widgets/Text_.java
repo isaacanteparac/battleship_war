@@ -1,4 +1,4 @@
-package com.iac.shipwar.components.widgets;
+package com.iac.shipwar.UI.widgets;
 
 import java.awt.Color;
 import java.awt.Dimension;

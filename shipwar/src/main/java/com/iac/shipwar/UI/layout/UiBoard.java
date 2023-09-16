@@ -1,13 +1,13 @@
-package com.iac.shipwar.components.layout;
+package com.iac.shipwar.UI.layout;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import javax.swing.JButton;
 
-import com.iac.shipwar.components.widgets.Button_;
-import com.iac.shipwar.components.widgets.Panel_;
-import com.iac.shipwar.components.widgets.Text_;
+import com.iac.shipwar.UI.widgets.Button_;
+import com.iac.shipwar.UI.widgets.Panel_;
+import com.iac.shipwar.UI.widgets.Text_;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.AlingText;

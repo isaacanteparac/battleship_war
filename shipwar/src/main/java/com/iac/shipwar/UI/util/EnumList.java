@@ -1,4 +1,4 @@
-package com.iac.shipwar.components.util;
+package com.iac.shipwar.UI.util;
 
 import java.util.ArrayList;
 

@@ -1,11 +1,11 @@
-package com.iac.shipwar.components.widgets;
+package com.iac.shipwar.UI.widgets;
 
 import java.awt.GridBagLayout;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import com.iac.shipwar.components.util.BackgroundPanel;
+import com.iac.shipwar.UI.util.BackgroundPanel;
 import com.iac.shipwar.interfaces.IProperties;
 
 public class Window implements IProperties {
@@ -13,7 +13,7 @@ public class Window implements IProperties {
   protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
-  protected String img = "b.jpg";
+  protected String img = "nr.jpg";
 
   public Window(String title, int w, int h) {
     this.width = w;

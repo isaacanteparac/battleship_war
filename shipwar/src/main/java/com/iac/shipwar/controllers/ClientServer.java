@@ -10,7 +10,6 @@ import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 
-import com.iac.shipwar.models.dataclass.AttackCoordinates;
 
 public class ClientServer {
 
