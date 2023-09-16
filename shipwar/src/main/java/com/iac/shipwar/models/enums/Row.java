@@ -20,5 +20,14 @@ public enum Row {
         return index;
     }
 
+    public static Row getByIndex(int index) {
+        for (Row row : Row.values()) {
+            if (row.index == index) {
+                return row;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with index " + index);
+    }
+
 }
 

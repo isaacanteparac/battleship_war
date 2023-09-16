@@ -48,7 +48,7 @@ public class UiMain {
                 MainPanels.ENEMYBOARD.getDisplayName(), "#b1114d", "#FFFFFF");
 
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
-        final Coordinates coordinates = new Coordinates(this.panels, dashboard);
+        final Coordinates coordinates = new Coordinates(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
 
         this.panels.get(MainPanels.ENEMYBOARD).visible(false);
         dashboard.updateTextsModifier(Dashboard.FAILED, "000");

@@ -37,7 +37,7 @@ public class UiDashboard {
         addBox(Modifier.INMUTABLE, Dashboard.SHIP, 200);
         addBox(Modifier.INMUTABLE, Dashboard.ATTACK, 155);
 
-        addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 400);
+        addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 420);
         boxLabel(Dashboard.DESTROYED, this.boxLabelSize);
         boxLabel(Dashboard.FAILED, this.boxLabelSize);
         

@@ -1,6 +1,5 @@
 package com.iac.shipwar.controllers;
 
-
 import java.awt.event.ActionEvent;
 
 import javax.swing.JButton;
@@ -19,6 +18,8 @@ import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class Attack {
 
@@ -35,14 +36,14 @@ public class Attack {
         assembleComponent();
     }
 
-
-
-
     public void assembleComponent() {
         Panel_ panelRow = createDefaultPanel(this.dashboard.getBox(Dashboard.ATTACK), 35);
         Panel_ panelColumn = createDefaultPanel(this.dashboard.getBox(Dashboard.ATTACK), 35);
-        final Options_ rowOpt = new Options_<>(Row.class);
-        final Options_ columnOpt = new Options_<>(Column.class);
+
+        final Options_<Row> rowOpt = new Options_<>();
+        final Options_<Column> columnOpt = new Options_<>();
+        rowOpt.pureEnum(Row.class);
+        columnOpt.pureEnum(Column.class);
 
         panelRow.addComponent(new Text_("Fila", 100).getLabel());
         panelColumn.addComponent(new Text_("Columna", 100).getLabel());

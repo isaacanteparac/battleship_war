@@ -12,12 +12,21 @@ public enum Column {
 
     private final int index;
 
-    Column(int index){
+    Column(int index) {
         this.index = index;
     }
 
     public int getIndex() {
         return index;
+    }
+
+    public static Column getByIndex(int index) {
+        for (Column column : Column.values()) {
+            if (column.index == index) {
+                return column;
+            }
+        }
+        throw new IllegalArgumentException("No enum constant with index " + index);
     }
 
 }
