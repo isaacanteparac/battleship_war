@@ -8,7 +8,7 @@ public class Button_ {
     protected JButton button;
     protected String text;
     protected String colorHex = "#FFFFFF";
-    protected int width = 70;
+    protected int width = 55;
     protected int height = width;
     protected int rounded = 45;
 

@@ -9,12 +9,11 @@ import com.iac.shipwar.controllers.Attack;
 import com.iac.shipwar.controllers.Coordinates;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.MainPanels;
-import com.iac.shipwar.models.enums.Dashboard;
 
 public class UiMain {
     protected Window windows;
-    protected final int sizeBoardW = 650;
-    protected final int sizeBoardH = 680;
+    protected final int sizeBoardW = 500;
+    protected final int sizeBoardH = 650;
     protected Map<MainPanels, Panel_> panels = new HashMap<MainPanels, Panel_>();
     protected final Map<MainPanels, PanelCharacteristic> panelProperties = new HashMap<MainPanels, PanelCharacteristic>();
     protected final int transparency = 70;
@@ -28,15 +27,15 @@ public class UiMain {
     }
 
     private void generatePanelsMain() {
-        this.windows = new Window("Barquitos Peleadores", 1905, 1000);
+        this.windows = new Window("Barquitos Peleadores", 1600, 850);
         createdPanel(MainPanels.INFORMATION,
-                new PanelCharacteristic(300, 900, 20,
+                new PanelCharacteristic(250, 700, 20,
                         0, 60, 10,
                         0, 0,
                         this.bgPanels, this.windows.getPanel()));
 
-        bulidBoard(MainPanels.MYBOARD);
-        bulidBoard(MainPanels.ENEMYBOARD);
+        bulidBoard(MainPanels.MYBOARD, 1);
+        bulidBoard(MainPanels.ENEMYBOARD,2);
 
     }
 
@@ -44,25 +43,26 @@ public class UiMain {
         final UiDashboard dashboard = new UiDashboard(this.panels.get(MainPanels.INFORMATION));
         final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD), MainPanels.MYBOARD.getDisplayName(),
                 "#114db1", "#FFFFFF");// d19bfe
-        final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
+         final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
                 MainPanels.ENEMYBOARD.getDisplayName(), "#b1114d", "#FFFFFF");
+                
 
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
         final Coordinates coordinates = new Coordinates(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
 
         this.panels.get(MainPanels.ENEMYBOARD).visible(false);
-        dashboard.updateTextsModifier(Dashboard.FAILED, "000");
+        //dashboard.updateTextsModifier(Dashboard.FAILED, "000");
     }
 
     public Map<MainPanels, Panel_> getMapPanels() {
         return this.panels;
     }
 
-    private void bulidBoard(MainPanels board) {
+    private void bulidBoard(MainPanels board, int xposition) {
         createdPanel(board,
-                new PanelCharacteristic(this.sizeBoardW, this.sizeBoardH, 20,
-                        this.transparency, 60, 15,
-                        2, 0,
+                new PanelCharacteristic(this.sizeBoardW, this.sizeBoardH, 10,
+                        this.transparency, 60, 10,
+                        xposition, 0,
                         this.bgPanels, this.windows.getPanel()));
     }
 

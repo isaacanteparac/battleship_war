@@ -38,7 +38,7 @@ public class UiBoard {
 
     private void title(String text) {
         Text_ t = new Text_(text, this.container.getSizeWidthComponent());
-        t.setSize(30);
+        t.setSize(25);
         t.setAling(AlingText.CENTER);
         t.setColor("#FFFFFF");
         this.container.addComponent(t.getLabel());
@@ -53,7 +53,8 @@ public class UiBoard {
         Map<Column, Button_> buttons = new HashMap<Column, Button_>();
         for (Column c : Column.values()) {
             Button_ b = new Button_();
-            Text_ t = new Text_(row + ":" + c, 40);
+            Text_ t = new Text_(row + ":" + c, 35);
+            t.setSize(16);
             t.setColor(this.fontColor);
             b.add(t.getLabel());
             b.setRounded(30);

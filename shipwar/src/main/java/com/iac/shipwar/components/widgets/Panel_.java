@@ -44,6 +44,14 @@ public class Panel_ {
         this.panel.setPreferredSize(new Dimension(this.characteristic.width(), this.characteristic.height()));
     }
 
+     public void setWidth(int width) {
+        this.panel.setPreferredSize(new Dimension(width, this.characteristic.height()));
+    }
+
+    public void setHeight(int height) {
+        this.panel.setPreferredSize(new Dimension(this.characteristic.width(),height));
+    }
+
     public int getSizeWidthComponent() {
         int widthComponet = this.characteristic.width() - this.characteristic.padding();
         return widthComponet;

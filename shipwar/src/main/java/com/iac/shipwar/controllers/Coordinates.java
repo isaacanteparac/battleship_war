@@ -19,6 +19,7 @@ import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.AlingText;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
+import com.iac.shipwar.models.enums.Modifier;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
 import com.iac.shipwar.models.enums.SubcomponentOrientation;
@@ -57,11 +58,11 @@ public class Coordinates {
     private void assembleComponent() {
         createText("Error: Coordenada incorrecta", "alertError", "#Be2528");
         this.shipSize = boxedOptionsShip("Barco", Ship.class, "shipSize");
-        createText("_______Posicion inicial_______", "initialSubtitle", "#154eb7");
+        createText("---Posicion Inicial---", "initialSubtitle", "#154eb7");
         this.iROw = boxedOptions("Fila", Row.class, "iROw");
         this.iColumn = boxedOptions("Columna", Column.class, "iColumn");
         continueButtonAction(createButton("Continuar", "continueBtn", "#154eb7"));
-        createText("_______Posicion final_______", "finalSubtitle", "#154eb7");
+        createText("---Posicion Final---", "finalSubtitle", "#154eb7");
         this.fRow = boxedOptions("Fila", Row.class, "eROw");
         this.fColumn = boxedOptions("Columna", Column.class, "eColumn");
         saveButtonAction(createButton("Guardar", "saveBtn", "#64ae4d"));
@@ -78,6 +79,7 @@ public class Coordinates {
                 availableOptions();
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
                 if (selectShip != Ship.SMALL) {
+                    dashboard.getBox(Dashboard.COORDINATES).setHeight(395);
                     visibleComponents(true);
                 } else {
                     panels.get("continueBtn").visible(false);
@@ -123,6 +125,7 @@ public class Coordinates {
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         panels.get("alertError").visible(false);
+                         dashboard.getBox(Dashboard.COORDINATES).setHeight(250);
                     } else {
 
                         panels.get("alertError").visible(true);
