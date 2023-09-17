@@ -116,8 +116,8 @@ public class UiDashboard {
             t.setColor(this.fontColor);
             panel.addComponent(t.getLabel());
             for (int i = 1; i <= ship.getSize(); i++) {
-                panel.addComponent(new Panel_(new PanelCharacteristic(40, 40, 0,
-                        255, 20, 0,
+                panel.addComponent(new Panel_(new PanelCharacteristic(30, 30, 0,
+                        255, 15, 0,
                         0, 0,
                         ship.getColorHex(), panel.getPanel())).getPanel());
             }

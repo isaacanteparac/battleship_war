@@ -2,7 +2,9 @@ package com.iac.shipwar.controllers;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
+import javax.swing.Timer;
 
 import javax.swing.JButton;
 
@@ -23,6 +25,8 @@ import java.awt.event.ActionListener;
 public class CoordenadasCtrl extends Coordinates {
     protected Map<String, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinatesMyShip = new HashMap<String, Map<Ship, ArrayList<ArrayList<Integer>>>>();
     protected ArrayList<ArrayList<Column>> coordinateMatrix = new ArrayList<ArrayList<Column>>();;
+    boolean available = false;
+    protected Timer timer;
 
     public CoordenadasCtrl(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
         super(ud, myBoard, enemyPanel);
@@ -87,31 +91,72 @@ public class CoordenadasCtrl extends Coordinates {
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
                 Row initialRowSelection = (Row) iROw.getComboBox().getSelectedItem();
                 Column initialColumnSelection = (Column) iColumn.getComboBox().getSelectedItem();
-                newInitialCoordinate.add(initialRowSelection.getIndex());
-                newInitialCoordinate.add(initialColumnSelection.getIndex());
-                coordinatesMyShip.get("initial").get(selectShip)
-                        .add(newInitialCoordinate);
 
-                if (selectShip != Ship.SMALL) {
-                    Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
-                    Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
-                    differentPosition(initialRowSelection, finalRowSelection, initialColumnSelection,
-                            finalColumnSelection, newFinalCoordinate, selectShip);
+                if (!verificationPosition(initialRowSelection, initialColumnSelection)) {
+
+                    if (selectShip != Ship.SMALL) {
+                        Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
+                        Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
+                        if (!verificationPosition(finalRowSelection, finalColumnSelection)) {
+                            myBoard.changeColor(initialRowSelection, initialColumnSelection, selectShip.getColorHex());
+                            newInitialCoordinate.add(initialRowSelection.getIndex());
+                            newInitialCoordinate.add(initialColumnSelection.getIndex());
+                            coordinatesMyShip.get("initial").get(selectShip)
+                                    .add(newInitialCoordinate);
+                            differentPosition(initialRowSelection, finalRowSelection, initialColumnSelection,
+                                    finalColumnSelection, newFinalCoordinate, selectShip);
+
+                        } else {
+                            System.out.println("if de adentor");
+                            // panels.get("alertError").visible(true);
+                            // alertCompletion("alertError", 395);
+                            // dashboard.getBox(Dashboard.COORDINATES).setHeight(500);
+
+                            available = false;
+                        }
+
+                    } else {
+                        myBoard.changeColor(initialRowSelection, initialColumnSelection, selectShip.getColorHex());
+
+                        newInitialCoordinate.add(initialRowSelection.getIndex());
+                        newInitialCoordinate.add(initialColumnSelection.getIndex());
+                        coordinatesMyShip.get("initial").get(selectShip)
+                                .add(newInitialCoordinate);
+
+                        iROw.setEnabled(true);
+                        iColumn.setEnabled(true);
+                        shipSize.setEnabled(true);
+                        visibleComponents(false);
+                    }
+
+                    if (coordinatesMyShip.get("initial").get(selectShip).size() == selectShip.getNumber()) {
+                        int selectedIndex = shipSize.getComboBox().getSelectedIndex();
+                        shipSize.getComboBox().removeItemAt(selectedIndex);
+                        if (shipSize.getComboBox().getItemCount() == 0) {
+                            dashboard.getBox(Dashboard.COORDINATES).visible(false);
+                            dashboard.getBox(Dashboard.ATTACK).visible(true);
+                            dashboard.getBox(Dashboard.FAILED).visible(true);
+                            enemyPanel.visible(true);
+                            dashboard.getBox(Dashboard.DESTROYED).visible(true);
+                        }
+                    }
                 } else {
+                    panels.get("alertError").visible(true);
                     iROw.setEnabled(true);
                     iColumn.setEnabled(true);
-                    shipSize.setEnabled(true);
-
-                    visibleComponents(false);
-                }
-
-                if (coordinatesMyShip.get("initial").get(selectShip).size() == selectShip.getNumber()) {
-                    int selectedIndex = shipSize.getComboBox().getSelectedIndex();
-                    shipSize.getComboBox().removeItemAt(selectedIndex);
+                    if (selectShip == Ship.SMALL) {
+                        alertCompletion("alertError", 250);
+                        dashboard.getBox(Dashboard.COORDINATES).setHeight(300);
+                    } else {
+                        System.out.println(">>> if de afuera");
+                        alertCompletion("alertError", 395);
+                        visibleComponents(false);
+                        dashboard.getBox(Dashboard.COORDINATES).setHeight(400);
+                    }
+                    available = false;
                 }
 
                 System.out.println(coordinatesMyShip.toString());
-
             }
         });
     }
@@ -128,10 +173,11 @@ public class CoordenadasCtrl extends Coordinates {
             iROw.setEnabled(true);
             iColumn.setEnabled(true);
             shipSize.setEnabled(true);
-            panels.get("alertError").visible(false);
             dashboard.getBox(Dashboard.COORDINATES).setHeight(250);
         } else {
             panels.get("alertError").visible(true);
+            available = false;
+            System.out.println("estoy en diffrenpostion");
             if (coordinatesMyShip.get("initial").get(selectShip).size() == 1) {
                 coordinatesMyShip.get("initial").get(selectShip).remove(0);
             } else {
@@ -141,34 +187,50 @@ public class CoordenadasCtrl extends Coordinates {
         }
     }
 
-    private boolean verificationPosition() {
-        // ArrayList<String> keys
-        // recore todos los arrays y verifica si las posicones no se repiten, si se
-        // repiten no se guarda ysale un mensaje de alerta
-        return true;
+    private boolean verificationPosition(Row iRowSelection, Column iColumnSelection) {
+        Iterator<Map.Entry<String, Map<Ship, ArrayList<ArrayList<Integer>>>>> coordinateIterator = coordinatesMyShip
+                .entrySet().iterator();
+        while (coordinateIterator.hasNext() && !available) {
+            Map.Entry<String, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinateOne = coordinateIterator.next();
+            Map<Ship, ArrayList<ArrayList<Integer>>> subCoordinate = coordinateOne.getValue();
+            Iterator<Map.Entry<Ship, ArrayList<ArrayList<Integer>>>> subCoordinateIterator = subCoordinate.entrySet()
+                    .iterator();
+            while (subCoordinateIterator.hasNext() && !available) {
+                Map.Entry<Ship, ArrayList<ArrayList<Integer>>> subcoordinateIteration = subCoordinateIterator.next();
+                ArrayList<ArrayList<Integer>> arrayList = subcoordinateIteration.getValue();
+                if (arrayList.isEmpty()) {
+                    available = false;
+                } else {
+                    for (ArrayList<Integer> subArrayList : arrayList) {
+                        if (subArrayList.isEmpty()) {
+                            available = false;
+                        } else {
+                            if (subArrayList.get(0) != iRowSelection.getIndex()
+                                    || subArrayList.get(1) != iColumnSelection.getIndex()) {
+                                available = false;
+                            } else {
+                                available = true;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        System.out.println("row: " + iRowSelection.getIndex() + " column: " + iColumnSelection.getIndex());
+        System.out.println("Existe : " + available);
+        return available;
     }
 
     private void availableOptions() {
-        Ship selectShip = (Ship) super.shipSize.getComboBox().getSelectedItem();
         Row rInit = (Row) this.iROw.getComboBox().getSelectedItem();
         Column cInit = (Column) this.iColumn.getComboBox().getSelectedItem();
         this.shipSize.setEnabled(false);
-
-        // los irow y icolumn de abajo pueden cambiar de acuerdo a la verificacion, para
-        // que lo
-        // pueda cambiar para que se haga valido
         this.iROw.setEnabled(false);
         this.iColumn.setEnabled(false);
-
         final EnumList<Row> horizontal = (EnumList<Row>) possibleMovements(rInit);
         final EnumList<Column> vertical = (EnumList<Column>) possibleMovements(cInit);
-
-        myBoard.changeColor(rInit, cInit, selectShip.getColorHex());
         this.fRow.setOptions(horizontal.getArrayList());
         this.fColumn.setOptions(vertical.getArrayList());
-
-        System.out.println("posible horizontal: " + horizontal.getArrayList().toString());
-        System.out.println("posible vertical: " + vertical.getArrayList().toString());
     }
 
     private EnumList<? extends Enum<?>> possibleMovements(Enum<?> rowOrColumn) {
@@ -203,6 +265,19 @@ public class CoordenadasCtrl extends Coordinates {
         } else {
             return null;
         }
+    }
+
+    private void alertCompletion(String alertName, int heightContainer) {
+        this.timer = new Timer(3000, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                panels.get(alertName).visible(false);
+                dashboard.getBox(Dashboard.COORDINATES).setHeight(heightContainer);
+
+            }
+        });
+        this.timer.start();
+
     }
 
 }

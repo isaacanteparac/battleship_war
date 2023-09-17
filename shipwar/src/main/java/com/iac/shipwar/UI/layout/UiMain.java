@@ -12,8 +12,8 @@ import com.iac.shipwar.models.enums.MainPanels;
 
 public class UiMain {
     protected Window windows;
-    protected final int sizeBoardW = 500;
-    protected final int sizeBoardH = 650;
+    protected final int sizeBoardW = 520;
+    protected final int sizeBoardH = 550;
     protected Map<MainPanels, Panel_> panels = new HashMap<MainPanels, Panel_>();
     protected final Map<MainPanels, PanelCharacteristic> panelProperties = new HashMap<MainPanels, PanelCharacteristic>();
     protected final int transparency = 70;
@@ -50,8 +50,7 @@ public class UiMain {
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
         final CoordenadasCtrl coordinates = new CoordenadasCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
 
-        //this.panels.get(MainPanels.ENEMYBOARD).visible(false);
-        //dashboard.updateTextsModifier(Dashboard.FAILED, "000");
+        this.panels.get(MainPanels.ENEMYBOARD).visible(false);
     }
 
     public Map<MainPanels, Panel_> getMapPanels() {
@@ -60,7 +59,7 @@ public class UiMain {
 
     private void bulidBoard(MainPanels board, int xposition) {
         createdPanel(board,
-                new PanelCharacteristic(this.sizeBoardW, this.sizeBoardH, 10,
+                new PanelCharacteristic(this.sizeBoardW, this.sizeBoardH, 20,
                         this.transparency, 60, 10,
                         xposition, 0,
                         this.bgPanels, this.windows.getPanel()));

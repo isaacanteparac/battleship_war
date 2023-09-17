@@ -10,8 +10,6 @@ import com.iac.shipwar.UI.layout.UiMain;
  */
 public class App {
 
-
-
     public static void main(String[] args) {
         final UiMain ui = new UiMain();
         

@@ -3,8 +3,6 @@ package com.iac.shipwar.UI.layout;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.swing.JButton;
-
 import com.iac.shipwar.UI.widgets.Button_;
 import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Text_;
@@ -27,9 +25,17 @@ public class UiBoard {
         this.fontColor = fcolor;
 
         title(title);
+
+         Panel_ subContainer = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 490,5,
+                0, 50, 5,
+                0, 0,
+                "#FFFFFF", this.container.getPanel()));
+        subContainer.activateGrip(SubcomponentOrientation.VERTICAL);
         for (Row row : Row.values()) {
-            createButton(row);
+            createButton(row, subContainer);
         }
+
+        this.container.addComponent(subContainer.getPanel());
     }
 
     public Panel_ getContainer() {
@@ -45,11 +51,11 @@ public class UiBoard {
 
     }
 
-    private void createButton(Row row) {
-        Panel_ box = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 70, 0,
+    private Panel_ createButton(Row row, Panel_ subContainer) {
+        Panel_ box = new Panel_(new PanelCharacteristic(subContainer.getSizeWidthComponent(), 55, 0,
                 0, 0, 5,
                 0, 0,
-                "#FFFFFF", this.container.getPanel()));
+                "#000000", this.container.getPanel()));
         Map<Column, Button_> buttons = new HashMap<Column, Button_>();
         for (Column c : Column.values()) {
             Button_ b = new Button_();
@@ -64,7 +70,8 @@ public class UiBoard {
         }
         box.activateGrip(SubcomponentOrientation.HORIZONTAL_W);
         this.rButton.put(row, buttons);
-        this.container.addComponent(box.getPanel());
+        subContainer.addComponent(box.getPanel());
+        return box;
     }
 
     public void changeColor(Row r, Column c, String h) {

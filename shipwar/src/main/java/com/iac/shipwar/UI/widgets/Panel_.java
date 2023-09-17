@@ -44,12 +44,16 @@ public class Panel_ {
         this.panel.setPreferredSize(new Dimension(this.characteristic.width(), this.characteristic.height()));
     }
 
-     public void setWidth(int width) {
+    public void setWidth(int width) {
         this.panel.setPreferredSize(new Dimension(width, this.characteristic.height()));
     }
 
     public void setHeight(int height) {
-        this.panel.setPreferredSize(new Dimension(this.characteristic.width(),height));
+        this.panel.setPreferredSize(new Dimension(this.characteristic.width(), height));
+    }
+
+    public int getWidth() {
+        return this.characteristic.width();
     }
 
     public int getSizeWidthComponent() {
@@ -70,8 +74,11 @@ public class Panel_ {
                                 : (o == SubcomponentOrientation.HORIZONTAL_H)
                                         ? new FlowLayout(FlowLayout.CENTER, 0, this.characteristic.gap())
                                         : (o == SubcomponentOrientation.VERTICAL_LEFT)
-                                        ? new FlowLayout(FlowLayout.LEFT)
-                                        : null);
+                                                ? new FlowLayout(FlowLayout.LEFT)
+                                                : (o == SubcomponentOrientation.VERTICAL)
+                                                        ? new FlowLayout(FlowLayout.CENTER, this.characteristic.gap(),
+                                                                this.characteristic.gap())
+                                                        : null);
 
     }
 
@@ -79,8 +86,7 @@ public class Panel_ {
         this.panel.add(component);
     }
 
-
-    public void visible(boolean v){
+    public void visible(boolean v) {
         this.panel.setVisible(v);
     }
 

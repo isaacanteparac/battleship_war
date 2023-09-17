@@ -17,16 +17,13 @@ import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
 import com.iac.shipwar.models.enums.SubcomponentOrientation;
 
-
 public class Coordinates {
     protected UiDashboard dashboard;
     protected UiBoard myBoard;
     protected Panel_ enemyPanel;
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected int shipCount = Ship.BIG.getNumber() + Ship.MEDIUM.getNumber() + Ship.SMALL.getNumber();
-    
-    
-    
+
     protected Options_<Ship> shipSize;
     protected Options_<Row> iROw;
     protected Options_<Column> iColumn;
@@ -34,7 +31,6 @@ public class Coordinates {
     protected Options_<Column> fColumn;
     protected Button_ continueBtn;
     protected Button_ saveBtn;
-
 
     public Coordinates(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
         this.myBoard = myBoard;
@@ -44,22 +40,22 @@ public class Coordinates {
     }
 
     private void assembleComponent() {
-        createText("Error: Coordenada incorrecta", "alertError", "#Be2528");
         this.shipSize = boxedOptions("Barco", Ship.class, "shipSize", 100, 60);
         createText("---Posicion Inicial---", "initialSubtitle", "#154eb7");
         this.iROw = boxedOptions("Fila", Row.class, "iROw", 60, 100);
         this.iColumn = boxedOptions("Columna", Column.class, "iColumn", 60, 100);
-        this.continueBtn = createButton("Continuar", "continueBtn", "#154eb7");
+        this.continueBtn = createButton("Continuar", "continueBtn", "#c880ff");
         createText("---Posicion Final---", "finalSubtitle", "#154eb7");
-        this.fRow = boxedOptions("Fila", Row.class, "eROw" , 60, 100);
+        this.fRow = boxedOptions("Fila", Row.class, "eROw", 60, 100);
         this.fColumn = boxedOptions("Columna", Column.class, "eColumn", 60, 100);
-        this.saveBtn = createButton("Guardar", "saveBtn", "#64ae4d");
+        this.saveBtn = createButton("Guardar", "saveBtn", "#9100ff");
+        createText("Error: Ya existe coordenada", "alertError", "#Be2528");
+
         panels.get("alertError").visible(false);
         visibleComponents(false);
         this.dashboard.getBox(Dashboard.COORDINATES).activateGrip(SubcomponentOrientation.VERTICAL_LEFT);
+
     }
-
-
 
     protected void visibleComponents(boolean b) {
         panels.get("continueBtn").visible(!b);
@@ -69,9 +65,8 @@ public class Coordinates {
         this.panels.get("saveBtn").visible(b);
     }
 
-
-
-    private <T extends Enum<T>> Options_<T> boxedOptions(String name, Class<T> enumClass, String id, int oWidth, int tWidth) {
+    private <T extends Enum<T>> Options_<T> boxedOptions(String name, Class<T> enumClass, String id, int oWidth,
+            int tWidth) {
         Panel_ panel = createDefaultPanel(this.dashboard.getBox(Dashboard.COORDINATES), 35);
         final Options_<T> options = new Options_<>();
         options.pureEnum(enumClass);
