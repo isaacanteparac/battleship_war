@@ -1,6 +1,7 @@
 package com.iac.shipwar.controllers;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -93,7 +94,6 @@ public class CoordenadasCtrl extends Coordinates {
                 Column initialColumnSelection = (Column) iColumn.getComboBox().getSelectedItem();
 
                 if (!verificationPosition(initialRowSelection, initialColumnSelection)) {
-
                     if (selectShip != Ship.SMALL) {
                         Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
                         Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
@@ -107,28 +107,19 @@ public class CoordenadasCtrl extends Coordinates {
                                     finalColumnSelection, newFinalCoordinate, selectShip);
 
                         } else {
-                            System.out.println("if de adentor");
-                            // panels.get("alertError").visible(true);
-                            // alertCompletion("alertError", 395);
-                            // dashboard.getBox(Dashboard.COORDINATES).setHeight(500);
-
                             available = false;
                         }
-
                     } else {
                         myBoard.changeColor(initialRowSelection, initialColumnSelection, selectShip.getColorHex());
-
                         newInitialCoordinate.add(initialRowSelection.getIndex());
                         newInitialCoordinate.add(initialColumnSelection.getIndex());
                         coordinatesMyShip.get("initial").get(selectShip)
                                 .add(newInitialCoordinate);
-
                         iROw.setEnabled(true);
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         visibleComponents(false);
                     }
-
                     if (coordinatesMyShip.get("initial").get(selectShip).size() == selectShip.getNumber()) {
                         int selectedIndex = shipSize.getComboBox().getSelectedIndex();
                         shipSize.getComboBox().removeItemAt(selectedIndex);
@@ -148,14 +139,12 @@ public class CoordenadasCtrl extends Coordinates {
                         alertCompletion("alertError", 250);
                         dashboard.getBox(Dashboard.COORDINATES).setHeight(300);
                     } else {
-                        System.out.println(">>> if de afuera");
                         alertCompletion("alertError", 395);
                         visibleComponents(false);
                         dashboard.getBox(Dashboard.COORDINATES).setHeight(400);
                     }
                     available = false;
                 }
-
                 System.out.println(coordinatesMyShip.toString());
             }
         });
@@ -164,6 +153,29 @@ public class CoordenadasCtrl extends Coordinates {
     private void differentPosition(Row initialRowSelection, Row finalRowSelection, Column initialColumnSelection,
             Column finalColumnSelection, ArrayList<Integer> newFinalCoordinate, Ship selectShip) {
         if (initialRowSelection != finalRowSelection || initialColumnSelection != finalColumnSelection) {
+            if (selectShip == Ship.BIG) {
+                int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
+                int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
+                boolean validIndices = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
+                                      middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
+                //TODO: if (!verificationPosition(initialRowSelection, initialColumnSelection)) tengo que llamaar porque si hay un espacio vacio el el
+                // ultimo extremo el de la mitas de sobreescribe tipo iniciobigx inicioMitady finalBigx el inicomedium se va a sobreescribir
+                //porque no esta validado, lo mas conveniente seria calcularlo arriba en  save button para que me salga el msg de error
+
+                //TODO: TAMBIEN HAY QUE VALIDAR EL BACOR MITAD PORQUE SI HAY UN ESPACIO DISPONIBLE Y EL FINAL DE ESE BARCO ESE SE VA A SOBREESCRIBIR
+                // AUNQUE ESTE OTRO TIPO DE BARCO, FUERA DE ESTOS DOS BUGS TODO FUNCIONA A LA PERFECCION
+                if (validIndices) {
+                    Row middleRow = Row.getByIndex(middleRowIndex);
+                    Column middleColumn = Column.getByIndex(middleColumnIndex);
+                    ArrayList<Integer> integerArrayList = new ArrayList<>();
+                    integerArrayList.addAll(Arrays.asList(middleRow.getIndex(), middleColumn.getIndex()));
+                    coordinatesMyShip.get("middle").get(selectShip).add(integerArrayList);
+                    myBoard.changeColor(middleRow, middleColumn, selectShip.getColorHex());
+                }
+            }
+            
+            
+
             newFinalCoordinate.add(finalRowSelection.getIndex());
             newFinalCoordinate.add(finalColumnSelection.getIndex());
             coordinatesMyShip.get("final").get(selectShip)
@@ -177,7 +189,6 @@ public class CoordenadasCtrl extends Coordinates {
         } else {
             panels.get("alertError").visible(true);
             available = false;
-            System.out.println("estoy en diffrenpostion");
             if (coordinatesMyShip.get("initial").get(selectShip).size() == 1) {
                 coordinatesMyShip.get("initial").get(selectShip).remove(0);
             } else {
@@ -224,34 +235,50 @@ public class CoordenadasCtrl extends Coordinates {
     private void availableOptions() {
         Row rInit = (Row) this.iROw.getComboBox().getSelectedItem();
         Column cInit = (Column) this.iColumn.getComboBox().getSelectedItem();
+        Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
         this.shipSize.setEnabled(false);
         this.iROw.setEnabled(false);
         this.iColumn.setEnabled(false);
-        final EnumList<Row> horizontal = (EnumList<Row>) possibleMovements(rInit);
-        final EnumList<Column> vertical = (EnumList<Column>) possibleMovements(cInit);
+        final EnumList<Row> horizontal = (EnumList<Row>) possibleMovements(rInit, selectShip);
+        final EnumList<Column> vertical = (EnumList<Column>) possibleMovements(cInit, selectShip);
         this.fRow.setOptions(horizontal.getArrayList());
         this.fColumn.setOptions(vertical.getArrayList());
     }
 
-    private EnumList<? extends Enum<?>> possibleMovements(Enum<?> rowOrColumn) {
+    private EnumList<? extends Enum<?>> possibleMovements(Enum<?> rowOrColumn, Ship shipType) {
         EnumList movements = new EnumList<>();
-
         int index = (rowOrColumn instanceof Column) ? ((Column) rowOrColumn).getIndex()
                 : ((Row) rowOrColumn).getIndex();
-
         switch (index) {
             case 7:
-                movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
+                if (shipType != Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
+
+                } else {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - 2)));
+                }
                 movements.addEnum(getByIndex(rowOrColumn, index));
                 break;
             case 0:
                 movements.addEnum(getByIndex(rowOrColumn, index));
-                movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
+                if (shipType != Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
+
+                } else {
+                    movements.addEnum(getByIndex(rowOrColumn, (index + 2)));
+                }
                 break;
             default:
-                movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
-                movements.addEnum(getByIndex(rowOrColumn, index));
-                movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
+                if (shipType != Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
+                    movements.addEnum(getByIndex(rowOrColumn, index));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
+
+                } else {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - 2)));
+                    movements.addEnum(getByIndex(rowOrColumn, index));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + 2)));
+                }
                 break;
         }
         return movements;
@@ -273,7 +300,6 @@ public class CoordenadasCtrl extends Coordinates {
             public void actionPerformed(ActionEvent e) {
                 panels.get(alertName).visible(false);
                 dashboard.getBox(Dashboard.COORDINATES).setHeight(heightContainer);
-
             }
         });
         this.timer.start();

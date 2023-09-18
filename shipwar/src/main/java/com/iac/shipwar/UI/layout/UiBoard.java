@@ -77,7 +77,6 @@ public class UiBoard {
     public void changeColor(Row r, Column c, String h) {
         Button_ button = this.rButton.get(r).get(c);
         button.setColorBg(h);
-        System.out.println("change color");
     }
 
 }
