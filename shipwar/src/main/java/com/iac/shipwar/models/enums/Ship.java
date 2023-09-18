@@ -3,7 +3,7 @@ package com.iac.shipwar.models.enums;
 public enum Ship {
     SMALL(1, "#ec0bcf", "Corbetas", 4),
     MEDIUM(2, "#ec980b", "Fragatas", 3),
-    BIG(3, "#0bec28", "Buques", 50);
+    BIG(3, "#0bec28", "Buques", 2);
 
     private final int size;
     private final String colorHex;
