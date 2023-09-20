@@ -15,6 +15,7 @@ import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
+import com.iac.shipwar.models.enums.ShipStructure;
 import com.iac.shipwar.models.enums.SubcomponentOrientation;
 
 public class Coordinates {
@@ -41,11 +42,11 @@ public class Coordinates {
 
     private void assembleComponent() {
         this.shipSize = boxedOptions("Barco", Ship.class, "shipSize", 100, 60);
-        createText("---Posicion Inicial---", "initialSubtitle", "#154eb7");
+        createText(ShipStructure.BOW.getDisplayName(), "initialSubtitle", "#154eb7");
         this.iROw = boxedOptions("Fila", Row.class, "iROw", 60, 100);
         this.iColumn = boxedOptions("Columna", Column.class, "iColumn", 60, 100);
         this.continueBtn = createButton("Continuar", "continueBtn", "#c880ff");
-        createText("---Posicion Final---", "finalSubtitle", "#154eb7");
+        createText(ShipStructure.STERN.getDisplayName(), "finalSubtitle", "#154eb7");
         this.fRow = boxedOptions("Fila", Row.class, "eROw", 60, 100);
         this.fColumn = boxedOptions("Columna", Column.class, "eColumn", 60, 100);
         this.saveBtn = createButton("Guardar", "saveBtn", "#9100ff");
@@ -57,7 +58,7 @@ public class Coordinates {
 
     }
 
-    protected void visibleComponents(boolean b) {
+    public void visibleComponents(boolean b) {
         panels.get("continueBtn").visible(!b);
         this.panels.get("finalSubtitle").visible(b);
         this.panels.get("eROw").visible(b);

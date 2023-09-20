@@ -6,7 +6,7 @@ import java.util.Map;
 import com.iac.shipwar.UI.components.Attack;
 import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Window;
-import com.iac.shipwar.controllers.CoordenadasCtrl;
+import com.iac.shipwar.controllers.CoordinatesCtrl;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.MainPanels;
 
@@ -48,7 +48,7 @@ public class UiMain {
                 
 
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
-        final CoordenadasCtrl coordinates = new CoordenadasCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
+        final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
 
         this.panels.get(MainPanels.ENEMYBOARD).visible(false);
     }

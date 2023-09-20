@@ -19,26 +19,27 @@ import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
+import com.iac.shipwar.models.enums.ShipStructure;
 import com.iac.shipwar.models.enums.TypeMarineElement;
 import com.iac.shipwar.models.enums.VitalConditions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-public class CoordenadasCtrl extends Coordinates {
-    protected Map<String, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinatesMyShip = new HashMap<String, Map<Ship, ArrayList<ArrayList<Integer>>>>();
+public class CoordinatesCtrl extends Coordinates {
+    protected Map<ShipStructure, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinatesMyShip = new HashMap<ShipStructure, Map<Ship, ArrayList<ArrayList<Integer>>>>();
     protected ArrayList<ArrayList<Column>> coordinateMatrix = new ArrayList<ArrayList<Column>>();;
     protected boolean available = false;
     protected Singleton singleton = Singleton.getInstance();
     protected Timer timer;
 
-    public CoordenadasCtrl(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
+    public CoordinatesCtrl(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
         super(ud, myBoard, enemyPanel);
         continueButtonAction(continueBtn);
         saveButtonAction(saveBtn);
-        this.coordinatesMyShip.put("initial", new HashMap<>());
-        this.coordinatesMyShip.put("middle", new HashMap<>());
-        this.coordinatesMyShip.put("final", new HashMap<>());
+        this.coordinatesMyShip.put(ShipStructure.BOW, new HashMap<>());
+        this.coordinatesMyShip.put(ShipStructure.CENTER, new HashMap<>());
+        this.coordinatesMyShip.put(ShipStructure.STERN, new HashMap<>());
         initialMap(Ship.SMALL);
         initialMap(Ship.MEDIUM);
         initialMap(Ship.BIG);
@@ -46,9 +47,9 @@ public class CoordenadasCtrl extends Coordinates {
     }
 
     private void initialMap(Ship key) {
-        this.coordinatesMyShip.get("initial").put(key, new ArrayList<>());
-        this.coordinatesMyShip.get("middle").put(key, new ArrayList<>());
-        this.coordinatesMyShip.get("final").put(key, new ArrayList<>());
+        this.coordinatesMyShip.get(ShipStructure.BOW).put(key, new ArrayList<>());
+        this.coordinatesMyShip.get(ShipStructure.CENTER).put(key, new ArrayList<>());
+        this.coordinatesMyShip.get(ShipStructure.STERN).put(key, new ArrayList<>());
     }
 
     private void buildArray() {
@@ -69,8 +70,6 @@ public class CoordenadasCtrl extends Coordinates {
             @Override
             public void actionPerformed(ActionEvent e) {
                 availableOptions();
-                System.out.println(singleton.getGoodBoard().toString());
-
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
                 if (selectShip != Ship.SMALL) {
                     dashboard.getBox(Dashboard.COORDINATES).setHeight(395);
@@ -93,75 +92,83 @@ public class CoordenadasCtrl extends Coordinates {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ArrayList<Integer> newInitialCoordinate = new ArrayList<>();
-                ArrayList<Integer> newFinalCoordinate = new ArrayList<>();
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
                 Row initialRowSelection = (Row) iROw.getComboBox().getSelectedItem();
                 Column initialColumnSelection = (Column) iColumn.getComboBox().getSelectedItem();
 
                 if (!verificationPosition(initialRowSelection, initialColumnSelection)) {
+                    singleton.imprimirGoodBoard();
                     if (selectShip != Ship.SMALL) {
                         Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
                         Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
                         if (!verificationPosition(finalRowSelection, finalColumnSelection)) {
-                            myBoard.changeColor(initialRowSelection, initialColumnSelection, selectShip.getColorHex());
-                            newInitialCoordinate.add(initialRowSelection.getIndex());
-                            newInitialCoordinate.add(initialColumnSelection.getIndex());
-                            coordinatesMyShip.get("initial").get(selectShip)
-                                    .add(newInitialCoordinate);
+                            add(ShipStructure.BOW, initialRowSelection, initialColumnSelection, selectShip);
                             differentPosition(initialRowSelection, finalRowSelection, initialColumnSelection,
-                                    finalColumnSelection, newFinalCoordinate, selectShip);
+                                    finalColumnSelection, selectShip);
 
                         } else {
                             available = false;
                         }
                     } else {
-                        myBoard.changeColor(initialRowSelection, initialColumnSelection, selectShip.getColorHex());
-                        newInitialCoordinate.add(initialRowSelection.getIndex());
-                        newInitialCoordinate.add(initialColumnSelection.getIndex());
-                        coordinatesMyShip.get("initial").get(selectShip)
-                                .add(newInitialCoordinate);
+                        add(ShipStructure.BOW, initialRowSelection, initialColumnSelection, selectShip);
                         iROw.setEnabled(true);
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         visibleComponents(false);
-                        ShipDeployed sDesDeployed =  singleton.getShipGood(initialRowSelection, initialColumnSelection);
+                        ShipDeployed sDesDeployed = singleton.getShipGood(initialRowSelection, initialColumnSelection);
                         sDesDeployed.setMarineElement(TypeMarineElement.SHIP);
                         sDesDeployed.setVital(VitalConditions.ALIVE);
-                        sDesDeployed.setShip(selectShip);
                     }
-                    if (coordinatesMyShip.get("initial").get(selectShip).size() == selectShip.getNumber()) {
-                        int selectedIndex = shipSize.getComboBox().getSelectedIndex();
-                        shipSize.getComboBox().removeItemAt(selectedIndex);
-                        if (shipSize.getComboBox().getItemCount() == 0) {
-                            dashboard.getBox(Dashboard.COORDINATES).visible(false);
-                            dashboard.getBox(Dashboard.ATTACK).visible(true);
-                            dashboard.getBox(Dashboard.FAILED).visible(true);
-                            enemyPanel.visible(true);
-                            dashboard.getBox(Dashboard.DESTROYED).visible(true);
-                        }
-                    }
+                    enableEnemyBoard(selectShip);
                 } else {
-                    panels.get("alertError").visible(true);
-                    iROw.setEnabled(true);
-                    iColumn.setEnabled(true);
-                    if (selectShip == Ship.SMALL) {
-                        alertCompletion("alertError", 250);
-                        dashboard.getBox(Dashboard.COORDINATES).setHeight(300);
-                    } else {
-                        alertCompletion("alertError", 395);
-                        visibleComponents(false);
-                        dashboard.getBox(Dashboard.COORDINATES).setHeight(400);
-                    }
-                    available = false;
+                    enableAlert(selectShip);
                 }
                 System.out.println(coordinatesMyShip.toString());
             }
         });
     }
 
+    private void add(ShipStructure shipStructure, Row iRowSelection, Column iColumnSelection, Ship selectShip) {
+        ArrayList<Integer> newCoordinate = new ArrayList<>();
+        myBoard.changeColor(iRowSelection, iColumnSelection, selectShip.getColorHex());
+        newCoordinate.add(iRowSelection.getIndex());
+        newCoordinate.add(iColumnSelection.getIndex());
+        coordinatesMyShip.get(shipStructure).get(selectShip)
+                .add(newCoordinate);
+    }
+
+    private void enableAlert(Ship selectShip) {
+        panels.get("alertError").visible(true);
+        iROw.setEnabled(true);
+        iColumn.setEnabled(true);
+        if (selectShip == Ship.SMALL) {
+            alertCompletion("alertError", 250);
+            dashboard.getBox(Dashboard.COORDINATES).setHeight(300);
+        } else {
+            alertCompletion("alertError", 395);
+            visibleComponents(false);
+            dashboard.getBox(Dashboard.COORDINATES).setHeight(400);
+        }
+        available = false;
+    }
+
+    private void enableEnemyBoard(Ship selectShip) {
+        if (coordinatesMyShip.get(ShipStructure.BOW).get(selectShip).size() == selectShip.getNumber()) {
+            int selectedIndex = shipSize.getComboBox().getSelectedIndex();
+            shipSize.getComboBox().removeItemAt(selectedIndex);
+            if (shipSize.getComboBox().getItemCount() == 0) {
+                dashboard.getBox(Dashboard.COORDINATES).visible(false);
+                dashboard.getBox(Dashboard.ATTACK).visible(true);
+                dashboard.getBox(Dashboard.FAILED).visible(true);
+                enemyPanel.visible(true);
+                dashboard.getBox(Dashboard.DESTROYED).visible(true);
+            }
+        }
+    }
+
     private void differentPosition(Row initialRowSelection, Row finalRowSelection, Column initialColumnSelection,
-            Column finalColumnSelection, ArrayList<Integer> newFinalCoordinate, Ship selectShip) {
+            Column finalColumnSelection, Ship selectShip) {
+
         if (initialRowSelection != finalRowSelection || initialColumnSelection != finalColumnSelection) {
             if (selectShip == Ship.BIG) {
                 int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
@@ -182,18 +189,10 @@ public class CoordenadasCtrl extends Coordinates {
                 if (validIndices) {
                     Row middleRow = Row.getByIndex(middleRowIndex);
                     Column middleColumn = Column.getByIndex(middleColumnIndex);
-                    ArrayList<Integer> integerArrayList = new ArrayList<>();
-                    integerArrayList.addAll(Arrays.asList(middleRow.getIndex(), middleColumn.getIndex()));
-                    coordinatesMyShip.get("middle").get(selectShip).add(integerArrayList);
-                    myBoard.changeColor(middleRow, middleColumn, selectShip.getColorHex());
+                    add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
                 }
             }
-
-            newFinalCoordinate.add(finalRowSelection.getIndex());
-            newFinalCoordinate.add(finalColumnSelection.getIndex());
-            coordinatesMyShip.get("final").get(selectShip)
-                    .add(newFinalCoordinate);
-            myBoard.changeColor(finalRowSelection, finalColumnSelection, selectShip.getColorHex());
+            add(ShipStructure.STERN, finalRowSelection, finalColumnSelection, selectShip);
             visibleComponents(false);
             iROw.setEnabled(true);
             iColumn.setEnabled(true);
@@ -202,20 +201,21 @@ public class CoordenadasCtrl extends Coordinates {
         } else {
             panels.get("alertError").visible(true);
             available = false;
-            if (coordinatesMyShip.get("initial").get(selectShip).size() == 1) {
-                coordinatesMyShip.get("initial").get(selectShip).remove(0);
+            if (coordinatesMyShip.get(ShipStructure.BOW).get(selectShip).size() == 1) {
+                coordinatesMyShip.get(ShipStructure.BOW).get(selectShip).remove(0);
             } else {
-                coordinatesMyShip.get("initial").get(selectShip)
-                        .remove(coordinatesMyShip.get("initial").get(selectShip).size() - 1);
+                coordinatesMyShip.get(ShipStructure.BOW).get(selectShip)
+                        .remove(coordinatesMyShip.get(ShipStructure.BOW).get(selectShip).size() - 1);
             }
         }
     }
 
     private boolean verificationPosition(Row iRowSelection, Column iColumnSelection) {
-        Iterator<Map.Entry<String, Map<Ship, ArrayList<ArrayList<Integer>>>>> coordinateIterator = coordinatesMyShip
+        Iterator<Map.Entry<ShipStructure, Map<Ship, ArrayList<ArrayList<Integer>>>>> coordinateIterator = coordinatesMyShip
                 .entrySet().iterator();
         while (coordinateIterator.hasNext() && !available) {
-            Map.Entry<String, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinateOne = coordinateIterator.next();
+            Map.Entry<ShipStructure, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinateOne = coordinateIterator
+                    .next();
             Map<Ship, ArrayList<ArrayList<Integer>>> subCoordinate = coordinateOne.getValue();
             Iterator<Map.Entry<Ship, ArrayList<ArrayList<Integer>>>> subCoordinateIterator = subCoordinate.entrySet()
                     .iterator();

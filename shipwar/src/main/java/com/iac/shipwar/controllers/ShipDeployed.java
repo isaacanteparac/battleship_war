@@ -1,5 +1,8 @@
 package com.iac.shipwar.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
@@ -13,7 +16,7 @@ public class ShipDeployed {
     private Column column;
     private VitalConditions vital;
     private Ship ship;
-    //private Map<String, 
+    private Map<String, ShipDeployed> position = new HashMap<String, ShipDeployed>();
 
     public ShipDeployed(TypeMarineElement marineElement, Row row, Column column) {
         this.marineElement = marineElement;
@@ -63,6 +66,10 @@ public class ShipDeployed {
 
     public String getId() {
         return id;
+    }
+
+    public void addPosition(String key_ ,ShipDeployed content) {
+        this.position.put(key_, content);
     }
 
     public void setId(String id) {

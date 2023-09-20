@@ -6,7 +6,7 @@ public enum Ship {
     BIG(3, "#0bec28", "Buques", 2);
 
     private final int size;
-    private final String colorHex;
+    private String colorHex;
     private final String displayName;
     private final int number_;
 
@@ -31,5 +31,9 @@ public enum Ship {
 
     public String getDisplayName() {
         return displayName;
+    }
+
+    public void setColorHex(String colorHex) {
+        this.colorHex = colorHex;
     }
 }

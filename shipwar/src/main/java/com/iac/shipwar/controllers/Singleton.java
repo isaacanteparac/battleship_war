@@ -42,6 +42,20 @@ public class Singleton {
         return this.enemyBoard;
     }
 
+    public void imprimirGoodBoard() {
+        for (Map.Entry<Row, Map<Column, ShipDeployed>> entry : goodBoard.entrySet()) {
+            Row row = entry.getKey();
+            Map<Column, ShipDeployed> columnMap = entry.getValue();
+            System.out.print(row + ": ");
+            for (Map.Entry<Column, ShipDeployed> subEntry : columnMap.entrySet()) {
+                Column column = subEntry.getKey();
+                ShipDeployed ship = subEntry.getValue();
+                System.out.print("(" + column + ", " + ship + ") ");
+            }
+            System.out.println();
+        }
+    }
+
     public ShipDeployed getShipEnemy(Row row, Column column) {
         return this.enemyBoard.get(row).get(column);
     }
@@ -49,6 +63,5 @@ public class Singleton {
     public ShipDeployed getShipGood(Row row, Column column) {
         return this.goodBoard.get(row).get(column);
     }
-    
 
 }
