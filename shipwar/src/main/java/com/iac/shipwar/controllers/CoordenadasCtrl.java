@@ -19,6 +19,8 @@ import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
+import com.iac.shipwar.models.enums.TypeMarineElement;
+import com.iac.shipwar.models.enums.VitalConditions;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,7 +28,8 @@ import java.awt.event.ActionListener;
 public class CoordenadasCtrl extends Coordinates {
     protected Map<String, Map<Ship, ArrayList<ArrayList<Integer>>>> coordinatesMyShip = new HashMap<String, Map<Ship, ArrayList<ArrayList<Integer>>>>();
     protected ArrayList<ArrayList<Column>> coordinateMatrix = new ArrayList<ArrayList<Column>>();;
-    boolean available = false;
+    protected boolean available = false;
+    protected Singleton singleton = Singleton.getInstance();
     protected Timer timer;
 
     public CoordenadasCtrl(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
@@ -61,10 +64,13 @@ public class CoordenadasCtrl extends Coordinates {
 
     private void continueButtonAction(Button_ btn) {
         JButton button = btn.geButton();
+
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 availableOptions();
+                System.out.println(singleton.getGoodBoard().toString());
+
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
                 if (selectShip != Ship.SMALL) {
                     dashboard.getBox(Dashboard.COORDINATES).setHeight(395);
@@ -119,6 +125,10 @@ public class CoordenadasCtrl extends Coordinates {
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         visibleComponents(false);
+                        ShipDeployed sDesDeployed =  singleton.getShipGood(initialRowSelection, initialColumnSelection);
+                        sDesDeployed.setMarineElement(TypeMarineElement.SHIP);
+                        sDesDeployed.setVital(VitalConditions.ALIVE);
+                        sDesDeployed.setShip(selectShip);
                     }
                     if (coordinatesMyShip.get("initial").get(selectShip).size() == selectShip.getNumber()) {
                         int selectedIndex = shipSize.getComboBox().getSelectedIndex();
@@ -157,13 +167,18 @@ public class CoordenadasCtrl extends Coordinates {
                 int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
                 int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
                 boolean validIndices = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
-                                      middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
-                //TODO: if (!verificationPosition(initialRowSelection, initialColumnSelection)) tengo que llamaar porque si hay un espacio vacio el el
-                // ultimo extremo el de la mitas de sobreescribe tipo iniciobigx inicioMitady finalBigx el inicomedium se va a sobreescribir
-                //porque no esta validado, lo mas conveniente seria calcularlo arriba en  save button para que me salga el msg de error
+                        middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
+                // TODO: if (!verificationPosition(initialRowSelection, initialColumnSelection))
+                // tengo que llamaar porque si hay un espacio vacio el el
+                // ultimo extremo el de la mitas de sobreescribe tipo iniciobigx inicioMitady
+                // finalBigx el inicomedium se va a sobreescribir
+                // porque no esta validado, lo mas conveniente seria calcularlo arriba en save
+                // button para que me salga el msg de error
 
-                //TODO: TAMBIEN HAY QUE VALIDAR EL BACOR MITAD PORQUE SI HAY UN ESPACIO DISPONIBLE Y EL FINAL DE ESE BARCO ESE SE VA A SOBREESCRIBIR
-                // AUNQUE ESTE OTRO TIPO DE BARCO, FUERA DE ESTOS DOS BUGS TODO FUNCIONA A LA PERFECCION
+                // TODO: TAMBIEN HAY QUE VALIDAR EL BACOR MITAD PORQUE SI HAY UN ESPACIO
+                // DISPONIBLE Y EL FINAL DE ESE BARCO ESE SE VA A SOBREESCRIBIR
+                // AUNQUE ESTE OTRO TIPO DE BARCO, FUERA DE ESTOS DOS BUGS TODO FUNCIONA A LA
+                // PERFECCION
                 if (validIndices) {
                     Row middleRow = Row.getByIndex(middleRowIndex);
                     Column middleColumn = Column.getByIndex(middleColumnIndex);
@@ -173,8 +188,6 @@ public class CoordenadasCtrl extends Coordinates {
                     myBoard.changeColor(middleRow, middleColumn, selectShip.getColorHex());
                 }
             }
-            
-            
 
             newFinalCoordinate.add(finalRowSelection.getIndex());
             newFinalCoordinate.add(finalColumnSelection.getIndex());
@@ -305,5 +318,4 @@ public class CoordenadasCtrl extends Coordinates {
         this.timer.start();
 
     }
-
 }

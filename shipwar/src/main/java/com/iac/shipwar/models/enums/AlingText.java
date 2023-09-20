@@ -16,4 +16,5 @@ public enum AlingText {
     public int get() {
         return alignmentConstant;
     }
+    
 }

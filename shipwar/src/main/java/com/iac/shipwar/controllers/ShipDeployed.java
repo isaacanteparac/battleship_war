@@ -1,4 +1,4 @@
-package com.iac.shipwar.models.dataclass;
+package com.iac.shipwar.controllers;
 
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Row;
@@ -8,10 +8,12 @@ import com.iac.shipwar.models.enums.VitalConditions;
 
 public class ShipDeployed {
     private TypeMarineElement marineElement;
+    private String id;
     private Row row;
     private Column column;
     private VitalConditions vital;
     private Ship ship;
+    //private Map<String, 
 
     public ShipDeployed(TypeMarineElement marineElement, Row row, Column column) {
         this.marineElement = marineElement;
@@ -58,5 +60,13 @@ public class ShipDeployed {
     public void setShip(Ship ship) {
         this.ship = ship;
     }
-}
 
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+}
