@@ -97,7 +97,6 @@ public class CoordinatesCtrl extends Coordinates {
                 Column initialColumnSelection = (Column) iColumn.getComboBox().getSelectedItem();
 
                 if (!verificationPosition(initialRowSelection, initialColumnSelection)) {
-                    singleton.imprimirGoodBoard();
                     if (selectShip != Ship.SMALL) {
                         Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
                         Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
@@ -115,17 +114,24 @@ public class CoordinatesCtrl extends Coordinates {
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         visibleComponents(false);
-                        ShipDeployed sDesDeployed = singleton.getShipGood(initialRowSelection, initialColumnSelection);
-                        sDesDeployed.setMarineElement(TypeMarineElement.SHIP);
-                        sDesDeployed.setVital(VitalConditions.ALIVE);
+                        // sa
+                        saveData(initialRowSelection, initialColumnSelection, selectShip);
                     }
                     enableEnemyBoard(selectShip);
                 } else {
                     enableAlert(selectShip);
                 }
+
                 System.out.println(coordinatesMyShip.toString());
             }
         });
+    }
+
+    private void saveData(Row row, Column column, Ship ship) {
+        ShipDeployed deployed = singleton.getShipGood(row, column);
+        deployed.setMarineElement(TypeMarineElement.SHIP);
+        deployed.setVital(VitalConditions.ALIVE);
+        deployed.setShip(ship);
     }
 
     private void add(ShipStructure shipStructure, Row iRowSelection, Column iColumnSelection, Ship selectShip) {
@@ -135,6 +141,9 @@ public class CoordinatesCtrl extends Coordinates {
         newCoordinate.add(iColumnSelection.getIndex());
         coordinatesMyShip.get(shipStructure).get(selectShip)
                 .add(newCoordinate);
+        saveData(iRowSelection, iColumnSelection, selectShip);
+        singleton.getBoardRowColum(iRowSelection, iColumnSelection);
+
     }
 
     private void enableAlert(Ship selectShip) {
@@ -240,8 +249,6 @@ public class CoordinatesCtrl extends Coordinates {
                 }
             }
         }
-        System.out.println("row: " + iRowSelection.getIndex() + " column: " + iColumnSelection.getIndex());
-        System.out.println("Existe : " + available);
         return available;
     }
 
@@ -318,4 +325,5 @@ public class CoordinatesCtrl extends Coordinates {
         this.timer.start();
 
     }
+
 }

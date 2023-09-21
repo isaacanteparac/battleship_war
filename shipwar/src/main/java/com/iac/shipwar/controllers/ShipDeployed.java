@@ -11,7 +11,6 @@ import com.iac.shipwar.models.enums.VitalConditions;
 
 public class ShipDeployed {
     private TypeMarineElement marineElement;
-    private String id;
     private Row row;
     private Column column;
     private VitalConditions vital;
@@ -64,16 +63,12 @@ public class ShipDeployed {
         this.ship = ship;
     }
 
-    public String getId() {
-        return id;
-    }
-
-    public void addPosition(String key_ ,ShipDeployed content) {
+    public void setPosition(String key_, ShipDeployed content) {
         this.position.put(key_, content);
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public Map<String, ShipDeployed> getPosition() {
+        return position;
     }
 
 }
