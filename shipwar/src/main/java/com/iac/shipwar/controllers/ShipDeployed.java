@@ -6,6 +6,7 @@ import java.util.Map;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.Ship;
+import com.iac.shipwar.models.enums.ShipStructure;
 import com.iac.shipwar.models.enums.TypeMarineElement;
 import com.iac.shipwar.models.enums.VitalConditions;
 
@@ -15,7 +16,7 @@ public class ShipDeployed {
     private Column column;
     private VitalConditions vital;
     private Ship ship;
-    private Map<String, ShipDeployed> position = new HashMap<String, ShipDeployed>();
+    private Map<ShipStructure, ShipDeployed> positions = new HashMap<ShipStructure, ShipDeployed>();
 
     public ShipDeployed(TypeMarineElement marineElement, Row row, Column column) {
         this.marineElement = marineElement;
@@ -63,12 +64,12 @@ public class ShipDeployed {
         this.ship = ship;
     }
 
-    public void setPosition(String key_, ShipDeployed content) {
-        this.position.put(key_, content);
+    public void setPosition(ShipStructure key_, ShipDeployed content) {
+        this.positions.put(key_, content);
     }
 
-    public Map<String, ShipDeployed> getPosition() {
-        return position;
+    public Map<ShipStructure, ShipDeployed> getPosition() {
+        return this.positions;
     }
 
 }

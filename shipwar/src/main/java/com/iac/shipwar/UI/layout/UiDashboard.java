@@ -34,16 +34,17 @@ public class UiDashboard {
         this.texts.put(Modifier.MUTABLE, null);
 
         data();
+        addBox(Modifier.INMUTABLE, Dashboard.SETTING, 200);
         addBox(Modifier.INMUTABLE, Dashboard.SHIP, 200);
         addBox(Modifier.INMUTABLE, Dashboard.ATTACK, 155);
-
         addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 250);
         boxLabel(Dashboard.DESTROYED, this.boxLabelSize);
         boxLabel(Dashboard.FAILED, this.boxLabelSize);
-        
+
         this.box.get(Dashboard.ATTACK).visible(false);
         this.box.get(Dashboard.DESTROYED).visible(false);
         this.box.get(Dashboard.FAILED).visible(false);
+        this.box.get(Dashboard.COORDINATES).visible(false);
 
         shipColor();
     }
@@ -87,11 +88,16 @@ public class UiDashboard {
     private void data() {
         this.texts.put(Modifier.INMUTABLE, new HashMap<Dashboard, Text_>() {
             {
+                put(Dashboard.SETTING, immutableText(Dashboard.SETTING.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
                 put(Dashboard.SHIP, immutableText(Dashboard.SHIP.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.DESTROYED, immutableText(Dashboard.DESTROYED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.FAILED, immutableText(Dashboard.FAILED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.ATTACK, immutableText(Dashboard.ATTACK.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.COORDINATES, immutableText(Dashboard.COORDINATES.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.DESTROYED,
+                        immutableText(Dashboard.DESTROYED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.FAILED,
+                        immutableText(Dashboard.FAILED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.ATTACK,
+                        immutableText(Dashboard.ATTACK.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.COORDINATES,
+                        immutableText(Dashboard.COORDINATES.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
             }
         });
 

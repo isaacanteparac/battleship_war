@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.iac.shipwar.UI.components.Attack;
+import com.iac.shipwar.UI.components.Setting;
 import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Window;
 import com.iac.shipwar.controllers.CoordinatesCtrl;
+import com.iac.shipwar.controllers.SettingCtrl;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.MainPanels;
 
@@ -29,7 +31,7 @@ public class UiMain {
     private void generatePanelsMain() {
         this.windows = new Window("Barquitos Peleadores", 1600, 850);
         createdPanel(MainPanels.INFORMATION,
-                new PanelCharacteristic(250, 700, 20,
+                new PanelCharacteristic(250, 750, 20,
                         255, 60, 10,
                         0, 0,
                         "#FFFFFF", this.windows.getPanel()));
@@ -49,6 +51,7 @@ public class UiMain {
 
         final Attack attack = new Attack(uiBoardEnemy, dashboard);
         final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
+        final SettingCtrl settingGame = new SettingCtrl(dashboard, uiBoard);
 
         this.panels.get(MainPanels.ENEMYBOARD).visible(false);
     }

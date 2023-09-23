@@ -26,10 +26,7 @@ public class AttackCtrl extends Attack {
             public void actionPerformed(ActionEvent e) {
                 Row selectedRow = (Row) row.getSelectedItem();
                 Column selectedColumn = (Column) column.getSelectedItem();
-                //Shipdeployed data = new Shipdeployed(selectedRow, selectedColumn);
                 enemyBoard.getContainer().visible(true);
-
-                client.sendData("Jh");
                 enemyBoard.changeColor(selectedRow, selectedColumn, "#Fc045b");
                 System.out.println("Fila seleccionada: " + selectedRow);
                 System.out.println("Columna seleccionada: " + selectedColumn);

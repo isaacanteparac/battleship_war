@@ -1,29 +1,21 @@
 package com.iac.shipwar.UI.components;
 
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-
 import com.iac.shipwar.UI.layout.UiBoard;
 import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.UI.widgets.Button_;
 import com.iac.shipwar.UI.widgets.Options_;
 import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Text_;
-import com.iac.shipwar.controllers.ClientServer;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
-
-import java.util.ArrayList;
-import java.util.Collections;
 
 public class Attack {
 
     protected Panel_ container;
     protected String route;
     protected UiBoard enemyBoard;
-    protected ClientServer client;
     protected UiDashboard dashboard;
     protected Options_<Row> rowOption;
     protected Options_<Column> columnOption;
@@ -32,7 +24,6 @@ public class Attack {
     public Attack(UiBoard eb, UiDashboard ud) {
         this.enemyBoard = eb;
         this.dashboard = ud;
-        this.client = new ClientServer();
         assembleComponent();
     }
 
