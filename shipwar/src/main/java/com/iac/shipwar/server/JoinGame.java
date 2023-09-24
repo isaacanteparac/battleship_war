@@ -8,8 +8,10 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.UnknownHostException;
 
 import com.iac.shipwar.controllers.ShipDeployed;
 import com.iac.shipwar.interfaces.IGame;
@@ -84,7 +86,8 @@ public class JoinGame implements IGame {
             @Override
             public void run() {
                 while (serverListening) {
-                    receiveData();
+                    receiveData().printDetails("ENEMY");
+                    ;
                 }
             }
         });
@@ -110,6 +113,13 @@ public class JoinGame implements IGame {
     @Override
     public DatagramPacket sendData(ShipDeployed content) {
         try {
+            InetAddress localHost = InetAddress.getLocalHost();
+        String localIpAddress = localHost.getHostAddress();
+        System.out.println("Dirección IP local: " + localIpAddress);
+
+        int localPort = dtSocket.getLocalPort();
+        System.out.println("Puerto local: " + localPort);
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(content);
@@ -117,6 +127,8 @@ public class JoinGame implements IGame {
             this.dtPacket = new DatagramPacket(data, data.length,
                     InetAddress.getByName(this.host),
                     this.port);
+            content.printDetails("MIO");
+            dtSocket.send(dtPacket);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();

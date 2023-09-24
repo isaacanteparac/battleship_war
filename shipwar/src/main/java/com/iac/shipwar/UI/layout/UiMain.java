@@ -7,6 +7,7 @@ import com.iac.shipwar.UI.components.Attack;
 import com.iac.shipwar.UI.components.Setting;
 import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Window;
+import com.iac.shipwar.controllers.AttackCtrl;
 import com.iac.shipwar.controllers.CoordinatesCtrl;
 import com.iac.shipwar.controllers.SettingCtrl;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
@@ -44,12 +45,10 @@ public class UiMain {
     private void generateComponents() {
         final UiDashboard dashboard = new UiDashboard(this.panels.get(MainPanels.INFORMATION));
         final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD), MainPanels.MYBOARD.getDisplayName(),
-                "#114db1", "#FFFFFF");// d19bfe
+                "#114db1", "#FFFFFF");
          final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
                 MainPanels.ENEMYBOARD.getDisplayName(), "#b1114d", "#FFFFFF");
-                
-
-        final Attack attack = new Attack(uiBoardEnemy, dashboard);
+        final AttackCtrl attack = new AttackCtrl(uiBoardEnemy, dashboard);
         final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard, this.panels.get(MainPanels.ENEMYBOARD));
         final SettingCtrl settingGame = new SettingCtrl(dashboard, uiBoard);
 

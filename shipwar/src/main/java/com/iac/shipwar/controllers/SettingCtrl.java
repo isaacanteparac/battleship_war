@@ -38,10 +38,9 @@ public class SettingCtrl extends Setting {
                         textScreen.setText(singleton.getGameInstance().getPort());
                         panels.get("panelText").visible(true);
                         dashboard.getBox(Dashboard.SETTING).setHeight(80);
-                        dashboard.getBox(Dashboard.COORDINATES).visible(true);
                         inputPort.setVisible(false);
                         panels.get("panelJoinGame").visible(false);
-
+                        //dashboard.getBox(Dashboard.COORDINATES).visible(true);
                     }
 
                 }
@@ -51,7 +50,6 @@ public class SettingCtrl extends Setting {
 
     private void createGameButton(Button_ btn) {
         JButton button = btn.geButton();
-
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -62,6 +60,7 @@ public class SettingCtrl extends Setting {
                 textScreen.setText("Port: " + singleton.getGameInstance().getPort());
                 panels.get("panelText").visible(true);
                 dashboard.getBox(Dashboard.SETTING).setHeight(80);
+                //dashboard.getBox(Dashboard.COORDINATES).visible(true);
             }
         });
     }

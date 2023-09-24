@@ -8,6 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Random;
 
 import com.iac.shipwar.controllers.ShipDeployed;
@@ -25,9 +26,9 @@ public class CreateGame implements IGame {
     private Boolean serverListening;
 
     public CreateGame() throws Exception {
-        this.dtSocket = new DatagramSocket(this.port);
         start();
         randomPort();
+        this.dtSocket = new DatagramSocket(this.port);
         System.out.println("- - - create game - - -");
         System.out.println("- - - connected - - - \nPORT: " + this.port);
         startListening();
@@ -38,7 +39,7 @@ public class CreateGame implements IGame {
             @Override
             public void run() {
                 while (serverListening) {
-                    receiveData();
+                    receiveData().printDetails("ENEMY");
                 }
             }
         });
@@ -52,6 +53,8 @@ public class CreateGame implements IGame {
             this.buffer = new byte[this.bufferSize];
             this.dtPacket = new DatagramPacket(this.buffer, this.bufferSize);
             this.dtSocket.receive(this.dtPacket);
+            this.address = this.dtPacket.getAddress();
+            this.senderPort = this.dtPacket.getPort();
             ByteArrayInputStream bis = new ByteArrayInputStream(this.buffer);
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
@@ -65,24 +68,37 @@ public class CreateGame implements IGame {
     @Override
     public DatagramPacket sendData(ShipDeployed content) {
         try {
-            this.address = this.dtPacket.getAddress();
-            this.senderPort = this.dtPacket.getPort();
+            System.out.println("addres: " + this.address + " port: " + this.port);
+            InetAddress localHost = InetAddress.getLocalHost();
+            String localIpAddress = localHost.getHostAddress();
+            System.out.println("Dirección IP local: " + localIpAddress);
+
+            int localPort = dtSocket.getLocalPort();
+            System.out.println("Puerto local: " + localPort);
+
+            
+            if (this.address == null || this.senderPort == 0) {
+                System.out.println("Error: Dirección o puerto no configurados.");
+                return null;
+            }
+
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(content);
             this.buffer = bos.toByteArray();
             this.dtPacket = new DatagramPacket(this.buffer, this.buffer.length, this.address, this.senderPort);
+            content.printDetails("MIO");
+            this.dtSocket.send(dtPacket);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
-
     }
 
     private void randomPort() {
         Random random = new Random();
-        this.port = random.nextInt(9000) + 1000;
+        this.port = random.nextInt(6000) + 3001;
     }
 
     @Override

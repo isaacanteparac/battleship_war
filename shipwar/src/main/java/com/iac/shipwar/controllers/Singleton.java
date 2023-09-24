@@ -64,6 +64,14 @@ public class Singleton {
         return this.goodBoard.get(row).get(column);
     }
 
+
+/* 
+    public void attackEnemy(Row r, Column c , ShipDeployed s){
+        this.enemyBoard.get(r).get(c).setMarineElement(s.getMarineElement());
+        this.gameInstance.sendData(s);
+    }*/
+
+
     public IGame getGameInstance() {
         return this.gameInstance;
     }

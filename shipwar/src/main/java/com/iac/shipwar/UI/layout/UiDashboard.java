@@ -41,7 +41,7 @@ public class UiDashboard {
         boxLabel(Dashboard.DESTROYED, this.boxLabelSize);
         boxLabel(Dashboard.FAILED, this.boxLabelSize);
 
-        this.box.get(Dashboard.ATTACK).visible(false);
+        //this.box.get(Dashboard.ATTACK).visible(false);
         this.box.get(Dashboard.DESTROYED).visible(false);
         this.box.get(Dashboard.FAILED).visible(false);
         this.box.get(Dashboard.COORDINATES).visible(false);
