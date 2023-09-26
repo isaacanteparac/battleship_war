@@ -1,9 +1,9 @@
 package com.iac.shipwar.models.enums;
 
 public enum ShipStructure {
-    BOW("Proa"),
-    CENTER("Centro"),
-    STERN("Popa");
+    BOW("- - - - - - - - Proa - - - - - - - -"),
+    CENTER("- - - - - - - - Centro - - - - - - - -"),
+    STERN("- - - - - - - - Popa - - - - - - - -");
 
     private final String displayName;
 

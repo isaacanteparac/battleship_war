@@ -8,6 +8,7 @@ import com.iac.shipwar.UI.widgets.Panel_;
 import com.iac.shipwar.UI.widgets.Text_;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.Column;
+import com.iac.shipwar.models.enums.FontType;
 import com.iac.shipwar.models.enums.AlingText;
 import com.iac.shipwar.models.enums.SubcomponentOrientation;
 import com.iac.shipwar.models.enums.Row;
@@ -26,7 +27,7 @@ public class UiBoard {
 
         title(title);
 
-         Panel_ subContainer = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 490,5,
+         Panel_ subContainer = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 600,5,
                 0, 50, 5,
                 0, 0,
                 "#FFFFFF", this.container.getPanel()));
@@ -52,7 +53,7 @@ public class UiBoard {
     }
 
     private Panel_ createButton(Row row, Panel_ subContainer) {
-        Panel_ box = new Panel_(new PanelCharacteristic(subContainer.getSizeWidthComponent(), 55, 0,
+        Panel_ box = new Panel_(new PanelCharacteristic(620, 55, 0,
                 0, 0, 5,
                 0, 0,
                 "#000000", this.container.getPanel()));
@@ -60,7 +61,8 @@ public class UiBoard {
         for (Column c : Column.values()) {
             Button_ b = new Button_();
             Text_ t = new Text_(row + ":" + c, 35);
-            t.setSize(16);
+            t.setSize(13);
+            t.setType(FontType.BOLD);
             t.setColor(this.fontColor);
             b.add(t.getLabel());
             b.setRounded(30);

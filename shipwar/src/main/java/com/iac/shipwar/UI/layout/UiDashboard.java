@@ -22,10 +22,10 @@ public class UiDashboard {
     protected final int fontSizeSubtittle = 18;
     protected final int fontSizeTitle = 20;
     protected final int boxLabelSize = 60;
-    protected final String bgBox = "#e6e6e6";
-    protected final String fontColor = "#000000";
-    protected final String titleFontColor = "#1560dd";
-    protected final int transparencyBox = 255;
+    protected final String bgBox = "#FFFFFF";//e6e6e6
+    protected final String fontColor = "#FFFFFF";
+    protected final String titleFontColor = "#FFFFFF";//1560dd
+    protected final int transparencyBox = 50;
 
     public UiDashboard(Panel_ p) {
         this.container = p;
@@ -35,13 +35,13 @@ public class UiDashboard {
 
         data();
         addBox(Modifier.INMUTABLE, Dashboard.SETTING, 200);
-        addBox(Modifier.INMUTABLE, Dashboard.SHIP, 200);
+        addBox(Modifier.INMUTABLE, Dashboard.SHIP, 210);
         addBox(Modifier.INMUTABLE, Dashboard.ATTACK, 155);
         addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 250);
         boxLabel(Dashboard.DESTROYED, this.boxLabelSize);
         boxLabel(Dashboard.FAILED, this.boxLabelSize);
 
-        //this.box.get(Dashboard.ATTACK).visible(false);
+        this.box.get(Dashboard.ATTACK).visible(false);
         this.box.get(Dashboard.DESTROYED).visible(false);
         this.box.get(Dashboard.FAILED).visible(false);
         this.box.get(Dashboard.COORDINATES).visible(false);
@@ -113,12 +113,12 @@ public class UiDashboard {
         Ship[] ships = Ship.values();
         for (Ship ship : ships) {
             Panel_ panel = new Panel_(
-                    new PanelCharacteristic(this.box.get(Dashboard.SHIP).getSizeWidthComponent(), 50, 0,
+                    new PanelCharacteristic(this.box.get(Dashboard.SHIP).getSizeWidthComponent(), 40, 0,
                             0, 40, 0,
                             0, 0,
                             "#FFFFFF", this.box.get(Dashboard.SHIP).getPanel()));
             Text_ t = new Text_(
-                    (ship.getDisplayName() + "-" + String.valueOf(ship.getNumber())), 100);// 1000
+                    (ship.getDisplayName() + ":" + String.valueOf(ship.getNumber())), 100);// 1000
             t.setColor(this.fontColor);
             panel.addComponent(t.getLabel());
             for (int i = 1; i <= ship.getSize(); i++) {

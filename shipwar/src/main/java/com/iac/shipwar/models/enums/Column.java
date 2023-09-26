@@ -8,7 +8,9 @@ public enum Column {
     C5(4),
     C6(5),
     C7(6),
-    C8(7);
+    C8(7),
+    C9(8),
+    C10(9);
 
     private final int index;
 

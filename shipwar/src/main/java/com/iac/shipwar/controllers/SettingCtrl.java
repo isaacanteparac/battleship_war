@@ -6,6 +6,7 @@ import com.iac.shipwar.UI.components.Setting;
 import com.iac.shipwar.UI.layout.UiBoard;
 import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.UI.widgets.Button_;
+import com.iac.shipwar.UI.widgets.Window;
 import com.iac.shipwar.models.enums.Dashboard;
 
 import java.awt.event.ActionEvent;
@@ -14,10 +15,11 @@ import java.awt.event.ActionListener;
 public class SettingCtrl extends Setting {
 
     protected Singleton singleton = Singleton.getInstance();
+    protected Window w;
 
-    public SettingCtrl(UiDashboard ud, UiBoard myBoard) {
+    public SettingCtrl(UiDashboard ud, UiBoard myBoard, Window window) {
         super(ud, myBoard);
-
+        this.w = window;
         joinGameButton(this.btnJoinGame);
         createGameButton(this.btnCreateGame);
     }
@@ -40,7 +42,8 @@ public class SettingCtrl extends Setting {
                         dashboard.getBox(Dashboard.SETTING).setHeight(80);
                         inputPort.setVisible(false);
                         panels.get("panelJoinGame").visible(false);
-                        //dashboard.getBox(Dashboard.COORDINATES).visible(true);
+                        dashboard.getBox(Dashboard.COORDINATES).visible(true);
+                        w.getFrame().setVisible(true);
                     }
 
                 }
@@ -60,7 +63,9 @@ public class SettingCtrl extends Setting {
                 textScreen.setText("Port: " + singleton.getGameInstance().getPort());
                 panels.get("panelText").visible(true);
                 dashboard.getBox(Dashboard.SETTING).setHeight(80);
-                //dashboard.getBox(Dashboard.COORDINATES).visible(true);
+                dashboard.getBox(Dashboard.COORDINATES).visible(true);
+                w.getFrame().setVisible(true);
+
             }
         });
     }

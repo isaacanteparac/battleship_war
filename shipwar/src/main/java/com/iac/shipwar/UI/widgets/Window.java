@@ -13,21 +13,26 @@ public class Window implements IProperties {
   protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
-  protected String img = "nr.jpg";
+  protected String img = "dashboard.jpg";
 
-  public Window(String title, int w, int h) {
+  public Window(String title, int w, int h, Boolean wallapper) {
     this.width = w;
     this.height = h;
     this.frame = new JFrame(title);
-    this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/"+img);
-    //this.panelMain = new JPanel();
+    if (wallapper) {
+      this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/" + img);
+
+    } else {
+      this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/dashboard.jpg");
+      //this.panelMain = new JPanel();
+    }
     this.generateWindow();
   }
 
   private void generateWindow() {
     this.size_(this.frame, this.width, this.height);
     this.size_(this.panelMain, this.width, this.height);
-    this.background_(this.panelMain, "#024ac0");
+    this.background_(this.panelMain, "#f3f3f3");
     this.frame.add(this.panelMain);
     this.frame.setResizable(false);
     this.frame.setVisible(true);

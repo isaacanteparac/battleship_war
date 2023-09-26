@@ -8,11 +8,13 @@ public enum Row {
     R5(4),
     R6(5),
     R7(6),
-    R8(7);
+    R8(7),
+    R9(8),
+    R10(9);
 
     private final int index;
 
-    Row(int index){
+    Row(int index) {
         this.index = index;
     }
 
@@ -30,4 +32,3 @@ public enum Row {
     }
 
 }
-

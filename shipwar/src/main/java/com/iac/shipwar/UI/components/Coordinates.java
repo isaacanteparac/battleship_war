@@ -25,6 +25,8 @@ public class Coordinates {
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected int shipCount = Ship.BIG.getNumber() + Ship.MEDIUM.getNumber() + Ship.SMALL.getNumber();
 
+    protected final String fontColor = "#FFFFFF";
+
     protected Options_<Ship> shipSize;
     protected Options_<Row> iROw;
     protected Options_<Column> iColumn;
@@ -32,6 +34,7 @@ public class Coordinates {
     protected Options_<Column> fColumn;
     protected Button_ continueBtn;
     protected Button_ saveBtn;
+
 
     public Coordinates(UiDashboard ud, UiBoard myBoard, Panel_ enemyPanel) {
         this.myBoard = myBoard;
@@ -42,11 +45,11 @@ public class Coordinates {
 
     private void assembleComponent() {
         this.shipSize = boxedOptions("Barco", Ship.class, "shipSize", 100, 60);
-        createText(ShipStructure.BOW.getDisplayName(), "initialSubtitle", "#154eb7");
+        createText(ShipStructure.BOW.getDisplayName(), "initialSubtitle", "#FFFFFF");
         this.iROw = boxedOptions("Fila", Row.class, "iROw", 60, 100);
         this.iColumn = boxedOptions("Columna", Column.class, "iColumn", 60, 100);
         this.continueBtn = createButton("Continuar", "continueBtn", "#c880ff");
-        createText(ShipStructure.STERN.getDisplayName(), "finalSubtitle", "#154eb7");
+        createText(ShipStructure.STERN.getDisplayName(), "finalSubtitle", "#FFFFFF");
         this.fRow = boxedOptions("Fila", Row.class, "eROw", 60, 100);
         this.fColumn = boxedOptions("Columna", Column.class, "eColumn", 60, 100);
         this.saveBtn = createButton("Guardar", "saveBtn", "#9100ff");
@@ -72,7 +75,9 @@ public class Coordinates {
         final Options_<T> options = new Options_<>();
         options.pureEnum(enumClass);
         options.setWidth(oWidth);
-        panel.addComponent(new Text_(name, tWidth).getLabel());
+        Text_ t = new Text_(name, tWidth);
+        t.setColor(this.fontColor);
+        panel.addComponent(t.getLabel());
         options.addPanel(panel);
         this.panels.put(id, panel);
         this.dashboard.getBox(Dashboard.COORDINATES).addComponent(panel.getPanel());
@@ -100,7 +105,7 @@ public class Coordinates {
     }
 
     private Button_ createButton(String Text, String id, String colorHex) {
-        Panel_ panel = createDefaultPanel(this.dashboard.getBox(Dashboard.COORDINATES), 60);
+        Panel_ panel = createDefaultPanel(this.dashboard.getBox(Dashboard.COORDINATES), 45);
         Button_ b = new Button_();
         Text_ t = new Text_(Text, this.dashboard.getBox(Dashboard.COORDINATES).getSizeWidthComponent());
         b.add(t.getLabel());
@@ -108,7 +113,7 @@ public class Coordinates {
         b.setWidth(120);
         b.setHeight(40);
         b.setColorBg(colorHex);
-        t.setColor("#FFFFFF");
+        t.setColor("#000000");
         panel.addComponent(b.geButton());
         this.panels.put(id, panel);
         this.dashboard.getBox(Dashboard.COORDINATES).addComponent(panel.getPanel());

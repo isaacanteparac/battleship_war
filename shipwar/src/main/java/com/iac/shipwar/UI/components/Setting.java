@@ -31,7 +31,7 @@ public class Setting {
     }
 
     private void assembleComponent() {
-        this.textScreen = createText("6565", "panelText", "#000000");
+        this.textScreen = createText("6565", "panelText", "#FFFFFF");
         this.inputPort = new JTextField();
         this.inputPort
                 .setPreferredSize(new Dimension(this.dashboard.getBox(Dashboard.SETTING).getSizeWidthComponent(), 30));
