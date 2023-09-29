@@ -3,8 +3,8 @@ package com.iac.shipwar.models.enums;
 public enum Ship {
     MINI(1, "#f1618c", "Mini", 4),
     SMALL(2, "#a33cf0", "Pequeño", 3),
-    MEDIUM(3, "#c0ea1f", "Mediano", 2),
-    BIG(4, "#1eea4f", "Grande", 1);
+    MEDIUM(3, "#a58759", "Mediano", 2),
+    BIG(4, "#15a437", "Grande", 1);
 
     private final int size;
     private String colorHex;

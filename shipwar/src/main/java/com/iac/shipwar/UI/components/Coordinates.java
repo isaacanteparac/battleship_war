@@ -24,9 +24,7 @@ public class Coordinates {
     protected Panel_ enemyPanel;
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected int shipCount = Ship.BIG.getNumber() + Ship.MEDIUM.getNumber() + Ship.SMALL.getNumber();
-
-    protected final String fontColor = "#FFFFFF";
-
+    protected final String fontColor = "#A0A0A0A";
     protected Options_<Ship> shipSize;
     protected Options_<Row> iROw;
     protected Options_<Column> iColumn;
@@ -45,16 +43,15 @@ public class Coordinates {
 
     private void assembleComponent() {
         this.shipSize = boxedOptions("Barco", Ship.class, "shipSize", 100, 60);
-        createText(ShipStructure.BOW.getDisplayName(), "initialSubtitle", "#FFFFFF");
+        createText(ShipStructure.BOW.getDisplayName(), "initialSubtitle", "#2872f0");
         this.iROw = boxedOptions("Fila", Row.class, "iROw", 60, 100);
         this.iColumn = boxedOptions("Columna", Column.class, "iColumn", 60, 100);
-        this.continueBtn = createButton("Continuar", "continueBtn", "#c880ff");
-        createText(ShipStructure.STERN.getDisplayName(), "finalSubtitle", "#FFFFFF");
+        this.continueBtn = createButton("Continuar", "continueBtn", "#Fcb8f4");
+        createText(ShipStructure.STERN.getDisplayName(), "finalSubtitle", "#2872f0");
         this.fRow = boxedOptions("Fila", Row.class, "eROw", 60, 100);
         this.fColumn = boxedOptions("Columna", Column.class, "eColumn", 60, 100);
-        this.saveBtn = createButton("Guardar", "saveBtn", "#9100ff");
+        this.saveBtn = createButton("Guardar", "saveBtn", "#87fa94");
         createText("Error: Ya existe coordenada", "alertError", "#Be2528");
-
         panels.get("alertError").visible(false);
         visibleComponents(false);
         this.dashboard.getBox(Dashboard.COORDINATES).activateGrip(SubcomponentOrientation.VERTICAL_LEFT);

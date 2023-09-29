@@ -22,10 +22,10 @@ public class UiDashboard {
     protected final int fontSizeSubtittle = 18;
     protected final int fontSizeTitle = 20;
     protected final int boxLabelSize = 60;
-    protected final String bgBox = "#FFFFFF";//e6e6e6
-    protected final String fontColor = "#FFFFFF";
-    protected final String titleFontColor = "#FFFFFF";//1560dd
-    protected final int transparencyBox = 50;
+    protected final String bgBox = "#Dbe8fe";
+    protected final String fontColor = "#A0A0A0A";
+    protected final String titleFontColor = "#000000";
+    protected final int transparencyBox = 255;
 
     public UiDashboard(Panel_ p) {
         this.container = p;
@@ -35,15 +35,15 @@ public class UiDashboard {
 
         data();
         addBox(Modifier.INMUTABLE, Dashboard.SETTING, 200);
+        boxLabel(Dashboard.SCORE, this.boxLabelSize);
         addBox(Modifier.INMUTABLE, Dashboard.SHIP, 210);
         addBox(Modifier.INMUTABLE, Dashboard.ATTACK, 155);
         addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 250);
-        boxLabel(Dashboard.DESTROYED, this.boxLabelSize);
-        boxLabel(Dashboard.FAILED, this.boxLabelSize);
+        addBox(Modifier.INMUTABLE, Dashboard.SHOOTINGLOG, 250);
 
         this.box.get(Dashboard.ATTACK).visible(false);
-        this.box.get(Dashboard.DESTROYED).visible(false);
-        this.box.get(Dashboard.FAILED).visible(false);
+        this.box.get(Dashboard.SCORE).visible(false);
+        this.box.get(Dashboard.SHOOTINGLOG).visible(false);
         this.box.get(Dashboard.COORDINATES).visible(false);
 
         shipColor();
@@ -88,12 +88,13 @@ public class UiDashboard {
     private void data() {
         this.texts.put(Modifier.INMUTABLE, new HashMap<Dashboard, Text_>() {
             {
-                put(Dashboard.SETTING, immutableText(Dashboard.SETTING.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.SETTING,
+                        immutableText(Dashboard.SETTING.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
                 put(Dashboard.SHIP, immutableText(Dashboard.SHIP.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.DESTROYED,
-                        immutableText(Dashboard.DESTROYED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
-                put(Dashboard.FAILED,
-                        immutableText(Dashboard.FAILED.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.SHOOTINGLOG,
+                        immutableText(Dashboard.SHOOTINGLOG.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
+                put(Dashboard.SCORE,
+                        immutableText(Dashboard.SCORE.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
                 put(Dashboard.ATTACK,
                         immutableText(Dashboard.ATTACK.getDisplayName(), AlingText.LEFT, fontSizeSubtittle));
                 put(Dashboard.COORDINATES,
@@ -103,8 +104,7 @@ public class UiDashboard {
 
         this.texts.put(Modifier.MUTABLE, new HashMap<Dashboard, Text_>() {
             {
-                put(Dashboard.DESTROYED, new Text_("0000", container.getSizeWidthComponent()));
-                put(Dashboard.FAILED, new Text_("0000", container.getSizeWidthComponent()));
+                put(Dashboard.SCORE, new Text_("100 de 100", container.getSizeWidthComponent()));
             }
         });
     }
@@ -119,7 +119,7 @@ public class UiDashboard {
                             "#FFFFFF", this.box.get(Dashboard.SHIP).getPanel()));
             Text_ t = new Text_(
                     (ship.getDisplayName() + ":" + String.valueOf(ship.getNumber())), 100);// 1000
-            t.setColor(this.fontColor);
+            t.setColor(ship.getColorHex());
             panel.addComponent(t.getLabel());
             for (int i = 1; i <= ship.getSize(); i++) {
                 panel.addComponent(new Panel_(new PanelCharacteristic(30, 30, 0,

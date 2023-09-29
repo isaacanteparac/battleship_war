@@ -30,12 +30,12 @@ public class SettingCtrl extends Setting {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                panels.get("panelCreateGame").visible(false);
                 dashboard.getBox(Dashboard.SETTING).setHeight(130);
                 String text = inputPort.getText();
                 if (!text.isEmpty()) {
                     singleton.serverActive(false, inputPort.getText());
                     if (singleton.getGameInstance().getServerListening()) {
+                        panels.get("panelCreateGame").visible(false);
                         panels.get("panelText").visible(true);
                         textScreen.setText(singleton.getGameInstance().getPort());
                         panels.get("panelText").visible(true);
@@ -45,7 +45,6 @@ public class SettingCtrl extends Setting {
                         dashboard.getBox(Dashboard.COORDINATES).visible(true);
                         w.getFrame().setVisible(true);
                     }
-
                 }
             }
         });

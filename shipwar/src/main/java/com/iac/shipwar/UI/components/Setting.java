@@ -23,6 +23,8 @@ public class Setting {
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected Text_ textScreen;
     protected JTextField inputPort;
+    protected final String fontColor = "#A0A0A0A";
+
 
     public Setting(UiDashboard ud, UiBoard myBoard) {
         this.myBoard = myBoard;
@@ -31,14 +33,14 @@ public class Setting {
     }
 
     private void assembleComponent() {
-        this.textScreen = createText("6565", "panelText", "#FFFFFF");
+        this.textScreen = createText("6565", "panelText", fontColor);
         this.inputPort = new JTextField();
         this.inputPort
                 .setPreferredSize(new Dimension(this.dashboard.getBox(Dashboard.SETTING).getSizeWidthComponent(), 30));
         this.dashboard.getBox(Dashboard.SETTING).addComponent(this.inputPort);
 
-        this.btnJoinGame = createButton("Unirse", "panelJoinGame", "#E8DE14");
-        this.btnCreateGame = createButton("Crear", "panelCreateGame", "#37E814");
+        this.btnJoinGame = createButton("Unirse", "panelJoinGame", "#facd87");
+        this.btnCreateGame = createButton("Crear", "panelCreateGame", "#87b4fa");
         this.panels.get("panelText").visible(false);
     }
 

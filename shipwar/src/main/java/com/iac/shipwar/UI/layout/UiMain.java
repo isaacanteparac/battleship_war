@@ -1,6 +1,5 @@
 package com.iac.shipwar.UI.layout;
 
-import java.awt.event.WindowAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,12 +10,9 @@ import com.iac.shipwar.UI.widgets.Window;
 import com.iac.shipwar.controllers.AttackCtrl;
 import com.iac.shipwar.controllers.CoordinatesCtrl;
 import com.iac.shipwar.controllers.SettingCtrl;
+import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
 import com.iac.shipwar.models.enums.MainPanels;
-
-
-import java.awt.event.WindowEvent;
-
 
 
 public class UiMain {
@@ -27,6 +23,8 @@ public class UiMain {
     protected final Map<MainPanels, PanelCharacteristic> panelProperties = new HashMap<MainPanels, PanelCharacteristic>();
     protected final int transparency = 70;
     protected final String bgPanels = "#FFFFFF";
+    protected final Singleton singleton = Singleton.getInstance();
+
 
     public UiMain() {
         generatePanelsMain();
@@ -67,6 +65,7 @@ public class UiMain {
         final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard,
                 this.panels.get(MainPanels.ENEMYBOARD));
         final SettingCtrl settingGame = new SettingCtrl(dashboard, uiBoard, this.windows);
+        this.singleton.setMyBoard(uiBoard);
 
         this.panels.get(MainPanels.ENEMYBOARD).visible(false);
     }

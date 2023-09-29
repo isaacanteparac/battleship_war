@@ -8,12 +8,11 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.SocketException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.UnknownHostException;
 
 import com.iac.shipwar.controllers.ShipDeployed;
+import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.interfaces.IGame;
 
 //sender
@@ -25,6 +24,7 @@ public class JoinGame implements IGame {
     private byte[] buffer;
     private DatagramPacket dtPacket;
     private Boolean serverListening;
+    protected final Singleton singleton = Singleton.getInstance();
 
     public JoinGame(String http) throws Exception {
         dtSocket = new DatagramSocket();
@@ -86,8 +86,8 @@ public class JoinGame implements IGame {
             @Override
             public void run() {
                 while (serverListening) {
-                    receiveData().printDetails("ENEMY");
-                    ;
+                    receiveData();
+                    
                 }
             }
         });
@@ -103,6 +103,7 @@ public class JoinGame implements IGame {
             ByteArrayInputStream bis = new ByteArrayInputStream(this.buffer);
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
+            this.singleton.receiveAttack(receivedData);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -113,13 +114,6 @@ public class JoinGame implements IGame {
     @Override
     public DatagramPacket sendData(ShipDeployed content) {
         try {
-            InetAddress localHost = InetAddress.getLocalHost();
-        String localIpAddress = localHost.getHostAddress();
-        System.out.println("Dirección IP local: " + localIpAddress);
-
-        int localPort = dtSocket.getLocalPort();
-        System.out.println("Puerto local: " + localPort);
-
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(content);

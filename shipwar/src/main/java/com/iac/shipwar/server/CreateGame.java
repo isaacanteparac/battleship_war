@@ -8,10 +8,10 @@ import java.io.ObjectOutputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.Random;
 
 import com.iac.shipwar.controllers.ShipDeployed;
+import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.interfaces.IGame;
 
 //Receiver
@@ -24,6 +24,7 @@ public class CreateGame implements IGame {
     private DatagramPacket dtPacket;
     private InetAddress address;
     private Boolean serverListening;
+    protected final Singleton singleton = Singleton.getInstance();
 
     public CreateGame() throws Exception {
         start();
@@ -39,7 +40,7 @@ public class CreateGame implements IGame {
             @Override
             public void run() {
                 while (serverListening) {
-                    receiveData().printDetails("ENEMY");
+                    receiveData();
                 }
             }
         });
@@ -58,6 +59,7 @@ public class CreateGame implements IGame {
             ByteArrayInputStream bis = new ByteArrayInputStream(this.buffer);
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
+            this.singleton.receiveAttack(receivedData);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -68,20 +70,10 @@ public class CreateGame implements IGame {
     @Override
     public DatagramPacket sendData(ShipDeployed content) {
         try {
-            System.out.println("addres: " + this.address + " port: " + this.port);
-            InetAddress localHost = InetAddress.getLocalHost();
-            String localIpAddress = localHost.getHostAddress();
-            System.out.println("Dirección IP local: " + localIpAddress);
-
-            int localPort = dtSocket.getLocalPort();
-            System.out.println("Puerto local: " + localPort);
-
-            
             if (this.address == null || this.senderPort == 0) {
                 System.out.println("Error: Dirección o puerto no configurados.");
                 return null;
             }
-
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             ObjectOutputStream out = new ObjectOutputStream(bos);
             out.writeObject(content);

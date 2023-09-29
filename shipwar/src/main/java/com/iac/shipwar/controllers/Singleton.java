@@ -3,6 +3,7 @@ package com.iac.shipwar.controllers;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.iac.shipwar.UI.layout.UiBoard;
 import com.iac.shipwar.interfaces.IGame;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Row;
@@ -14,14 +15,31 @@ public class Singleton {
 
     private static Singleton instance;
     private IGame gameInstance;
-    private Map<Row, Map<Column, ShipDeployed>> goodBoard = new HashMap<Row, Map<Column, ShipDeployed>>();
-    private Map<Row, Map<Column, ShipDeployed>> enemyBoard = new HashMap<Row, Map<Column, ShipDeployed>>();
+    private int score = 1000;
+    private Map<Row, Map<Column, ShipDeployed>> board = new HashMap<Row, Map<Column, ShipDeployed>>();
+    private UiBoard myBoard;
 
     public static Singleton getInstance() {
         if (instance == null) {
             instance = new Singleton();
         }
         return instance;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    private void decreaseScore() {
+        if (this.score > 0) {
+            this.score -= 10;
+        }else{
+            System.out.println(">>>>>>> ganaste <<<<<");
+        }
+    }
+
+    public void setMyBoard(UiBoard b) {
+        this.myBoard = b;
     }
 
     // Cambiado el tipo de la variable
@@ -36,72 +54,31 @@ public class Singleton {
     }
 
     public void createRowsAndColumns() {
-        if (goodBoard.isEmpty() && enemyBoard.isEmpty()) {
+        if (board.isEmpty()) {
             for (Row r : Row.values()) {
                 Map<Column, ShipDeployed> mDefault = new HashMap<>();
                 for (Column c : Column.values()) {
                     mDefault.put(c, new ShipDeployed(TypeMarineElement.OCEAN, r, c));
                 }
-                this.goodBoard.put(r, mDefault);
-                this.enemyBoard.put(r, mDefault);
+                this.board.put(r, mDefault);
             }
         }
     }
 
-    public Map<Row, Map<Column, ShipDeployed>> getGoodBoard() {
-        return this.goodBoard;
-    }
-
-    public Map<Row, Map<Column, ShipDeployed>> getEnemyBoard() {
-        return this.enemyBoard;
-    }
-
-    public ShipDeployed getShipEnemy(Row row, Column column) {
-        return this.enemyBoard.get(row).get(column);
+    public Map<Row, Map<Column, ShipDeployed>> getboard() {
+        return this.board;
     }
 
     public ShipDeployed getShipGood(Row row, Column column) {
-        return this.goodBoard.get(row).get(column);
+        return this.board.get(row).get(column);
     }
-
-
-/* 
-    public void attackEnemy(Row r, Column c , ShipDeployed s){
-        this.enemyBoard.get(r).get(c).setMarineElement(s.getMarineElement());
-        this.gameInstance.sendData(s);
-    }*/
-
 
     public IGame getGameInstance() {
         return this.gameInstance;
     }
 
-    /* TODO: ELIMINAR */
-    public void imprimirGBoard() {
-        for (Map.Entry<Row, Map<Column, ShipDeployed>> entry : enemyBoard.entrySet()) {
-            Row row = entry.getKey();
-            Map<Column, ShipDeployed> columnMap = entry.getValue();
-
-            for (Map.Entry<Column, ShipDeployed> innerEntry : columnMap.entrySet()) {
-                Column column = innerEntry.getKey();
-                ShipDeployed ship = innerEntry.getValue();
-
-                System.out.println("Row: " + row + ", Column: " + column);
-                System.out.println("Ship Details: ");
-                System.out.println(" - Marine Element: " + ship.getMarineElement());
-                System.out.println(" - Vital Conditions: " + ship.getVital());
-                System.out.println(" - Ship Type: " + ship.getShip());
-                System.out.println(" - Row Position: " + ship.getRow());
-                System.out.println(" - Column Position: " + ship.getColumn());
-                System.out.println(" - Position Map: " + ship.getPosition().toString());
-                System.out.println("--------------------------");
-            }
-        }
-
-    }
-
     public void getBoardRowColum(Row targetRow, Column targetColumn) {
-        ShipDeployed ship = enemyBoard.get(targetRow).get(targetColumn);
+        ShipDeployed ship = board.get(targetRow).get(targetColumn);
 
         if (ship != null) {
             System.out.println("\nShip Details: ");
@@ -116,5 +93,26 @@ public class Singleton {
             System.out.println("No hay barco en la fila " + targetRow + ", columna " + targetColumn);
         }
     }
-    /* HASTA AQUI */
+
+    //funcion para decirle que se oculte el componente de ataque
+
+    //funcion para colorear si acete el ataque anterior de color rojo else color amrron claro
+
+    public void receiveAttack(ShipDeployed sd) {
+        System.out.println("\nrecibiste ataque del enenemigo");
+        if (this.board.get(sd.getRow()).get(sd.getColumn()).getMarineElement() == TypeMarineElement.SHIP ) {
+            replaceShipDeployed(sd);
+            decreaseScore();
+            System.out.println("puntuacion: "+this.score+"/100");
+            getBoardRowColum(sd.getRow(), sd.getColumn());
+            this.myBoard.changeColor(sd.getRow(), sd.getColumn(), "#Fc045b");
+        }else{
+            System.out.println("fallo la bomba");
+        }
+
+    }
+
+    public void replaceShipDeployed(ShipDeployed newShipDeploy) {
+        this.board.get(newShipDeploy.getRow()).put(newShipDeploy.getColumn(), newShipDeploy);
+    }
 }

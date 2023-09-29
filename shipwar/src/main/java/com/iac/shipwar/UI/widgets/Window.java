@@ -13,7 +13,7 @@ public class Window implements IProperties {
   protected int height;
   protected JPanel panelMain;
   protected JFrame frame;
-  protected String img = "dashboard.jpg";
+  protected String img = "nr.jpg";
 
   public Window(String title, int w, int h, Boolean wallapper) {
     this.width = w;
@@ -23,8 +23,7 @@ public class Window implements IProperties {
       this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/" + img);
 
     } else {
-      this.panelMain = new BackgroundPanel("/com/iac/shipwar/img/dashboard.jpg");
-      //this.panelMain = new JPanel();
+      this.panelMain = new JPanel();
     }
     this.generateWindow();
   }

@@ -39,6 +39,7 @@ public class CoordinatesCtrl extends Coordinates {
         this.coordinatesMyShip.put(ShipStructure.BOW, new HashMap<>());
         this.coordinatesMyShip.put(ShipStructure.CENTER, new HashMap<>());
         this.coordinatesMyShip.put(ShipStructure.STERN, new HashMap<>());
+        initialMap(Ship.MINI);
         initialMap(Ship.SMALL);
         initialMap(Ship.MEDIUM);
         initialMap(Ship.BIG);
@@ -62,6 +63,7 @@ public class CoordinatesCtrl extends Coordinates {
         }
     }
 
+    // NOTE: BOTON DE CONTINUAR, VERIFICA LOS POSIBLES MOVIMIENTOS
     private void continueButtonAction(Button_ btn) {
         JButton button = btn.geButton();
 
@@ -70,7 +72,7 @@ public class CoordinatesCtrl extends Coordinates {
             public void actionPerformed(ActionEvent e) {
                 availableOptions();
                 Ship selectShip = (Ship) shipSize.getComboBox().getSelectedItem();
-                if (selectShip != Ship.SMALL) {
+                if (selectShip != Ship.MINI) {
                     dashboard.getBox(Dashboard.COORDINATES).setHeight(395);
                     visibleComponents(true);
                 } else {
@@ -96,14 +98,13 @@ public class CoordinatesCtrl extends Coordinates {
                 Column initialColumnSelection = (Column) iColumn.getComboBox().getSelectedItem();
 
                 if (!verificationPosition(initialRowSelection, initialColumnSelection)) {
-                    if (selectShip != Ship.SMALL) {
+                    if (selectShip != Ship.MINI) {
                         Row finalRowSelection = (Row) fRow.getComboBox().getSelectedItem();
                         Column finalColumnSelection = (Column) fColumn.getComboBox().getSelectedItem();
                         if (!verificationPosition(finalRowSelection, finalColumnSelection)) {
                             add(ShipStructure.BOW, initialRowSelection, initialColumnSelection, selectShip);
                             differentPosition(initialRowSelection, finalRowSelection, initialColumnSelection,
                                     finalColumnSelection, selectShip);
-
                         } else {
                             available = false;
                         }
@@ -113,7 +114,6 @@ public class CoordinatesCtrl extends Coordinates {
                         iColumn.setEnabled(true);
                         shipSize.setEnabled(true);
                         visibleComponents(false);
-                        // sa
                         saveData(initialRowSelection, initialColumnSelection, selectShip);
                     }
                     enableEnemyBoard(selectShip);
@@ -121,7 +121,7 @@ public class CoordinatesCtrl extends Coordinates {
                     enableAlert(selectShip);
                 }
 
-                System.out.println(coordinatesMyShip.toString());
+                //System.out.println(coordinatesMyShip.toString());
             }
         });
     }
@@ -141,7 +141,6 @@ public class CoordinatesCtrl extends Coordinates {
         coordinatesMyShip.get(shipStructure).get(selectShip)
                 .add(newCoordinate);
         saveData(iRowSelection, iColumnSelection, selectShip);
-        singleton.getBoardRowColum(iRowSelection, iColumnSelection);
 
     }
 
@@ -149,7 +148,7 @@ public class CoordinatesCtrl extends Coordinates {
         panels.get("alertError").visible(true);
         iROw.setEnabled(true);
         iColumn.setEnabled(true);
-        if (selectShip == Ship.SMALL) {
+        if (selectShip == Ship.MINI) {
             alertCompletion("alertError", 250);
             dashboard.getBox(Dashboard.COORDINATES).setHeight(300);
         } else {
@@ -167,9 +166,11 @@ public class CoordinatesCtrl extends Coordinates {
             if (shipSize.getComboBox().getItemCount() == 0) {
                 dashboard.getBox(Dashboard.COORDINATES).visible(false);
                 dashboard.getBox(Dashboard.ATTACK).visible(true);
-                dashboard.getBox(Dashboard.FAILED).visible(true);
+                dashboard.getBox(Dashboard.SHOOTINGLOG).visible(true);
+                dashboard.getBox(Dashboard.SCORE).visible(true);
+
                 enemyPanel.visible(true);
-                dashboard.getBox(Dashboard.DESTROYED).visible(true);
+
             }
         }
     }
@@ -178,26 +179,42 @@ public class CoordinatesCtrl extends Coordinates {
             Column finalColumnSelection, Ship selectShip) {
 
         if (initialRowSelection != finalRowSelection || initialColumnSelection != finalColumnSelection) {
-            if (selectShip == Ship.BIG) {
+            if (selectShip == Ship.MEDIUM) {
                 int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
                 int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
-                boolean validIndices = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
+                Row middleRow = Row.getByIndex(middleRowIndex);
+                Column middleColumn = Column.getByIndex(middleColumnIndex);
+                boolean indexValidationMiddle = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
                         middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
-                // TODO: if (!verificationPosition(initialRowSelection, initialColumnSelection))
-                // tengo que llamaar porque si hay un espacio vacio el el
-                // ultimo extremo el de la mitas de sobreescribe tipo iniciobigx inicioMitady
-                // finalBigx el inicomedium se va a sobreescribir
-                // porque no esta validado, lo mas conveniente seria calcularlo arriba en save
-                // button para que me salga el msg de error
+                if (!verificationPosition(middleRow, middleColumn)) {
+                    if (indexValidationMiddle) {
+                        add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
+                    }
+                } else {
+                    System.out.println("no posicioanr en middle medium");
+                }
 
-                // TODO: TAMBIEN HAY QUE VALIDAR EL BACOR MITAD PORQUE SI HAY UN ESPACIO
-                // DISPONIBLE Y EL FINAL DE ESE BARCO ESE SE VA A SOBREESCRIBIR
-                // AUNQUE ESTE OTRO TIPO DE BARCO, FUERA DE ESTOS DOS BUGS TODO FUNCIONA A LA
-                // PERFECCION
-                if (validIndices) {
-                    Row middleRow = Row.getByIndex(middleRowIndex);
-                    Column middleColumn = Column.getByIndex(middleColumnIndex);
+            } else if (selectShip == Ship.BIG) {
+                int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
+                int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
+                int penultimateRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 3;
+                int penultimateColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 3;
+
+                boolean validIndicesM = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
+                        middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
+                boolean validIndicesP = penultimateRowIndex >= 0 && penultimateRowIndex < Row.values().length &&
+                        penultimateColumnIndex >= 0 && penultimateColumnIndex < Column.values().length;
+
+                Row middleRow = Row.getByIndex(middleRowIndex);
+                Column middleColumn = Column.getByIndex(middleColumnIndex);
+                Row penultimateRow = Row.getByIndex(penultimateRowIndex);
+                Column penultimateColumn = Column.getByIndex(penultimateColumnIndex);
+
+                if (validIndicesM && validIndicesP) {
+
                     add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
+                    //no se me añade el penultimo movimiento 
+                    add(ShipStructure.CENTER, penultimateRow, penultimateColumn, selectShip);
                 }
             }
             add(ShipStructure.STERN, finalRowSelection, finalColumnSelection, selectShip);
@@ -269,34 +286,41 @@ public class CoordinatesCtrl extends Coordinates {
         int index = (rowOrColumn instanceof Column) ? ((Column) rowOrColumn).getIndex()
                 : ((Row) rowOrColumn).getIndex();
         switch (index) {
-            case 7:
-                if (shipType != Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
-
+            case 9:
+                if (shipType == Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.BIG.getSize() - 1))));
+                } else if (shipType == Ship.MEDIUM) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.MEDIUM.getSize() - 1))));
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - 2)));
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.SMALL.getSize() - 1))));
                 }
                 movements.addEnum(getByIndex(rowOrColumn, index));
                 break;
             case 0:
                 movements.addEnum(getByIndex(rowOrColumn, index));
-                if (shipType != Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
-
+                if (shipType == Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.BIG.getSize() - 1))));
+                } else if (shipType == Ship.MEDIUM) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.MEDIUM.getSize() - 1))));
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index + 2)));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.SMALL.getSize() - 1))));
                 }
                 break;
             default:
-                if (shipType != Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - 1)));
+                if (shipType == Ship.BIG) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.BIG.getSize() - 1))));
                     movements.addEnum(getByIndex(rowOrColumn, index));
-                    movements.addEnum(getByIndex(rowOrColumn, (index + 1)));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.BIG.getSize() - 1))));
+
+                } else if (shipType == Ship.MEDIUM) {
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.MEDIUM.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, index));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.MEDIUM.getSize() - 1))));
 
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - 2)));
+                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.SMALL.getSize() - 1))));
                     movements.addEnum(getByIndex(rowOrColumn, index));
-                    movements.addEnum(getByIndex(rowOrColumn, (index + 2)));
+                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.SMALL.getSize() - 1))));
                 }
                 break;
         }
