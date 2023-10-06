@@ -11,9 +11,11 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.controllers.ShipDeployed;
 import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.interfaces.IGame;
+import com.iac.shipwar.models.enums.Dashboard;
 
 //sender
 public class JoinGame implements IGame {
@@ -24,9 +26,13 @@ public class JoinGame implements IGame {
     private byte[] buffer;
     private DatagramPacket dtPacket;
     private Boolean serverListening;
+    private Boolean attackComponet = true;
+    private UiDashboard dashboard;
+
     protected final Singleton singleton = Singleton.getInstance();
 
-    public JoinGame(String http) throws Exception {
+    public JoinGame(String http, UiDashboard dashboard) throws Exception {
+        this.dashboard = dashboard;
         dtSocket = new DatagramSocket();
         System.out.println("- - - join game - - -");
         if (verifyUrl(http) || verifyPort(http)) {
@@ -87,7 +93,7 @@ public class JoinGame implements IGame {
             public void run() {
                 while (serverListening) {
                     receiveData();
-                    
+
                 }
             }
         });
@@ -104,6 +110,8 @@ public class JoinGame implements IGame {
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
+            this.attackComponet = true;
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -123,12 +131,19 @@ public class JoinGame implements IGame {
                     this.port);
             content.printDetails("MIO");
             dtSocket.send(dtPacket);
+            this.attackComponet = false;
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
+    }
+
+    @Override
+    public boolean getAttackComponet() {
+        return attackComponet;
     }
 
     public void setServerListening(boolean open) {

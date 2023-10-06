@@ -2,14 +2,16 @@ package com.iac.shipwar.UI.widgets;
 
 import javax.swing.JButton;
 
+import com.iac.shipwar.models.enums.Ui;
+
 import java.awt.*;
 
 public class Button_ {
     protected JButton button;
     protected String text;
-    protected String colorHex = "#FFFFFF";
-    protected int width = 55;
-    protected int height = width;
+    protected String colorHex = Ui.DEFAULT_BUTTON_COLOR.getStringValue();
+    protected int width = Ui.BUTTON_WIDTH_DEFAULT.getIntValue();
+    protected int height = Ui.BUTTON_HEIGHT_DEFAULT.getIntValue();
     protected int rounded = 45;
 
     public Button_() {

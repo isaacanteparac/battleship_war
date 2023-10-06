@@ -10,9 +10,11 @@ import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.util.Random;
 
+import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.controllers.ShipDeployed;
 import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.interfaces.IGame;
+import com.iac.shipwar.models.enums.Dashboard;
 
 //Receiver
 public class CreateGame implements IGame {
@@ -24,9 +26,12 @@ public class CreateGame implements IGame {
     private DatagramPacket dtPacket;
     private InetAddress address;
     private Boolean serverListening;
+    private Boolean attackComponet = false;
     protected final Singleton singleton = Singleton.getInstance();
+    private UiDashboard dashboard;
 
-    public CreateGame() throws Exception {
+    public CreateGame(UiDashboard dashboard) throws Exception {
+        this.dashboard = dashboard;
         start();
         randomPort();
         this.dtSocket = new DatagramSocket(this.port);
@@ -60,6 +65,8 @@ public class CreateGame implements IGame {
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
+            this.attackComponet = true;
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -81,6 +88,8 @@ public class CreateGame implements IGame {
             this.dtPacket = new DatagramPacket(this.buffer, this.buffer.length, this.address, this.senderPort);
             content.printDetails("MIO");
             this.dtSocket.send(dtPacket);
+            this.attackComponet = false;
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();
@@ -91,6 +100,11 @@ public class CreateGame implements IGame {
     private void randomPort() {
         Random random = new Random();
         this.port = random.nextInt(6000) + 3001;
+    }
+
+    @Override
+    public boolean getAttackComponet() {
+        return attackComponet;
     }
 
     @Override

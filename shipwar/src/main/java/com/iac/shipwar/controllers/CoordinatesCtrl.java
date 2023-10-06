@@ -81,9 +81,7 @@ public class CoordinatesCtrl extends Coordinates {
                     panels.get("eROw").visible(false);
                     panels.get("eColumn").visible(false);
                     panels.get("saveBtn").visible(true);
-
                 }
-
             }
         });
     }
@@ -120,8 +118,6 @@ public class CoordinatesCtrl extends Coordinates {
                 } else {
                     enableAlert(selectShip);
                 }
-
-                //System.out.println(coordinatesMyShip.toString());
             }
         });
     }
@@ -165,10 +161,9 @@ public class CoordinatesCtrl extends Coordinates {
             shipSize.getComboBox().removeItemAt(selectedIndex);
             if (shipSize.getComboBox().getItemCount() == 0) {
                 dashboard.getBox(Dashboard.COORDINATES).visible(false);
-                dashboard.getBox(Dashboard.ATTACK).visible(true);
+                dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
                 dashboard.getBox(Dashboard.SHOOTINGLOG).visible(true);
                 dashboard.getBox(Dashboard.SCORE).visible(true);
-
                 enemyPanel.visible(true);
 
             }
@@ -197,9 +192,8 @@ public class CoordinatesCtrl extends Coordinates {
             } else if (selectShip == Ship.BIG) {
                 int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
                 int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
-                int penultimateRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 3;
-                int penultimateColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 3;
-
+                int penultimateRowIndex = (initialRowSelection.getIndex() - 1);
+                int penultimateColumnIndex = (initialColumnSelection.getIndex() - 1);
                 boolean validIndicesM = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
                         middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
                 boolean validIndicesP = penultimateRowIndex >= 0 && penultimateRowIndex < Row.values().length &&
@@ -211,9 +205,7 @@ public class CoordinatesCtrl extends Coordinates {
                 Column penultimateColumn = Column.getByIndex(penultimateColumnIndex);
 
                 if (validIndicesM && validIndicesP) {
-
                     add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
-                    //no se me añade el penultimo movimiento 
                     add(ShipStructure.CENTER, penultimateRow, penultimateColumn, selectShip);
                 }
             }

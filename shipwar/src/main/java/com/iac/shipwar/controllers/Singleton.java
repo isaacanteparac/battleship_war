@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.iac.shipwar.UI.layout.UiBoard;
+import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.interfaces.IGame;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Row;
@@ -18,6 +19,7 @@ public class Singleton {
     private int score = 1000;
     private Map<Row, Map<Column, ShipDeployed>> board = new HashMap<Row, Map<Column, ShipDeployed>>();
     private UiBoard myBoard;
+    private UiDashboard dashboard;
 
     public static Singleton getInstance() {
         if (instance == null) {
@@ -33,9 +35,13 @@ public class Singleton {
     private void decreaseScore() {
         if (this.score > 0) {
             this.score -= 10;
-        }else{
+        } else {
             System.out.println(">>>>>>> ganaste <<<<<");
         }
+    }
+
+    public void setDashboard(UiDashboard d) {
+        this.dashboard = d;
     }
 
     public void setMyBoard(UiBoard b) {
@@ -46,8 +52,8 @@ public class Singleton {
 
     public void serverActive(boolean create, String http) {
         try {
-            this.gameInstance = ((create) ? new CreateGame()
-                    : new JoinGame(http));
+            this.gameInstance = ((create) ? new CreateGame(this.dashboard)
+                    : new JoinGame(http, this.dashboard));
         } catch (Exception e1) {
             e1.printStackTrace();
         }
@@ -94,19 +100,20 @@ public class Singleton {
         }
     }
 
-    //funcion para decirle que se oculte el componente de ataque
+    // funcion para decirle que se oculte el componente de ataque
 
-    //funcion para colorear si acete el ataque anterior de color rojo else color amrron claro
+    // funcion para colorear si acete el ataque anterior de color rojo else color
+    // amrron claro
 
     public void receiveAttack(ShipDeployed sd) {
         System.out.println("\nrecibiste ataque del enenemigo");
-        if (this.board.get(sd.getRow()).get(sd.getColumn()).getMarineElement() == TypeMarineElement.SHIP ) {
+        if (this.board.get(sd.getRow()).get(sd.getColumn()).getMarineElement() == TypeMarineElement.SHIP) {
             replaceShipDeployed(sd);
             decreaseScore();
-            System.out.println("puntuacion: "+this.score+"/100");
+            System.out.println("puntuacion: " + this.score + "/1000");
             getBoardRowColum(sd.getRow(), sd.getColumn());
             this.myBoard.changeColor(sd.getRow(), sd.getColumn(), "#Fc045b");
-        }else{
+        } else {
             System.out.println("fallo la bomba");
         }
 
