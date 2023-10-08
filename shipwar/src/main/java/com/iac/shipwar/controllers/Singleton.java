@@ -7,6 +7,7 @@ import com.iac.shipwar.UI.layout.UiBoard;
 import com.iac.shipwar.UI.layout.UiDashboard;
 import com.iac.shipwar.interfaces.IGame;
 import com.iac.shipwar.models.enums.Column;
+import com.iac.shipwar.models.enums.Dashboard;
 import com.iac.shipwar.models.enums.Row;
 import com.iac.shipwar.models.enums.TypeMarineElement;
 import com.iac.shipwar.server.CreateGame;
@@ -35,6 +36,7 @@ public class Singleton {
     private void decreaseScore() {
         if (this.score > 0) {
             this.score -= 10;
+            this.dashboard.updateTextsModifier(Dashboard.SCORE,this.score+" de 1000");
         } else {
             System.out.println(">>>>>>> ganaste <<<<<");
         }
@@ -47,8 +49,6 @@ public class Singleton {
     public void setMyBoard(UiBoard b) {
         this.myBoard = b;
     }
-
-    // Cambiado el tipo de la variable
 
     public void serverActive(boolean create, String http) {
         try {
