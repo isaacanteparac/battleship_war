@@ -66,6 +66,8 @@ public class CreateGame implements IGame {
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
             this.attackComponet = true;
+            String text = "Enemy: " + receivedData.getRow().name() + " | " + receivedData.getColumn().name();
+            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
             this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
@@ -89,6 +91,8 @@ public class CreateGame implements IGame {
             content.printDetails("MIO");
             this.dtSocket.send(dtPacket);
             this.attackComponet = false;
+            String text = "     Yo: " + content.getRow().name() + " | " + content.getColumn().name();
+            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
             this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return dtPacket;
         } catch (Exception e) {

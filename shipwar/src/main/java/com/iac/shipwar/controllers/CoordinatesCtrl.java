@@ -274,11 +274,32 @@ public class CoordinatesCtrl extends Coordinates {
     }
 
     private EnumList<? extends Enum<?>> possibleMovements(Enum<?> rowOrColumn, Ship shipType) {
+        /*TODO: array que contega subarray que sea de tipo enumlist ARRAYLIST<MOMENTS.GETARRAYLIS>>
+         * ESAS OPCIONES SE DEBIRIAN MOSTRAR PARA SELECCIONAR LA POSICION FINAL QUE APAREZCA EN LA
+         * PANTALLA, PARA EVIATAR QUE SE AÑADA DE FORMA DIAGONAL SOLO TIENE QUE SALIR
+         * TOP, BOTTOM, LEFT, RIGHT
+         * 
+         * OR
+         * 
+         * QUE SOLO APREZCA LAS OPCIONES DE LAS COORDENAS PERO LA PALABRA TOP. BOTTOM. LEFT, RIGHT, PERO QUE 
+         * INTERNAMENTE SEPA QUE SON COLUMN Y ROW
+        */
+
+        /*
+         * TODO: CON RESPECTO A LOS ATAQUES CADA BOTON VA A LLAMAR A SINGLETON PARA EL ATTAQUE Y POR DEFUALT YA SE
+         * LE ENVIA COLUMN, ROW CON SU RESPECTIVA BOMBA, SE TIENE QUE CAMBIAR DE COLO, CREAR UN FUNCION EL A INTERFACE
+         * IGAME PARA QUE RETORNE EL ATAQUE Y ASI SE PUEDA COLOREAR
+         */
+
+         /*
+          * en cada socket debera haber una variable par confirmar que el createBoard tenga sus barcos en posicion
+          */
         EnumList movements = new EnumList<>();
         int index = (rowOrColumn instanceof Column) ? ((Column) rowOrColumn).getIndex()
                 : ((Row) rowOrColumn).getIndex();
         switch (index) {
             case 9:
+            //if index es igual mayor a column entonces que no se pueda poner de forma diagonal
                 if (shipType == Ship.BIG) {
                     movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.BIG.getSize() - 1))));
                 } else if (shipType == Ship.MEDIUM) {
