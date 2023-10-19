@@ -30,16 +30,19 @@ public class AttackCtrl extends Attack {
                 Row selectedRow = (Row) row.getSelectedItem();
                 Column selectedColumn = (Column) column.getSelectedItem();
                 enemyBoard.getContainer().visible(true);
-                enemyBoard.changeColor(selectedRow, selectedColumn, "#e5ddb9");
                 burningShot(selectedRow, selectedColumn);
+                if (singleton.getSuccessfulAttack()) {
+                    enemyBoard.changeColor(selectedRow, selectedColumn, "#Fc045b");
+
+                } else {
+                    enemyBoard.changeColor(selectedRow, selectedColumn, "#A29973");
+
+                }
             }
+
         });
     }
 
-    /*
-     * ShipDeployed receiveData();
-     * DatagramPacket sendData(ShipDeployed content);
-     */
     private void burningShot(Row row, Column column) {
         ShipDeployed shipDeath = new ShipDeployed(TypeMarineElement.BOMB, row, column);
         shipDeath.setVital(VitalConditions.DEAD);

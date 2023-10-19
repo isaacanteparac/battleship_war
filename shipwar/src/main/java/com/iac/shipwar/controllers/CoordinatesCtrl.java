@@ -161,7 +161,7 @@ public class CoordinatesCtrl extends Coordinates {
             shipSize.getComboBox().removeItemAt(selectedIndex);
             if (shipSize.getComboBox().getItemCount() == 0) {
                 dashboard.getBox(Dashboard.COORDINATES).visible(false);
-                dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
+                // dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
                 dashboard.getBox(Dashboard.SHOOTINGLOG).visible(true);
                 dashboard.getBox(Dashboard.SCORE).visible(true);
                 enemyPanel.visible(true);
@@ -186,27 +186,44 @@ public class CoordinatesCtrl extends Coordinates {
                         add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
                     }
                 } else {
-                    System.out.println("no posicioanr en middle medium");
+                    System.out.println("no posicionar en mitad - medium");
                 }
 
             } else if (selectShip == Ship.BIG) {
                 int middleRowIndex = (initialRowSelection.getIndex() + finalRowSelection.getIndex()) / 2;
                 int middleColumnIndex = (initialColumnSelection.getIndex() + finalColumnSelection.getIndex()) / 2;
-                int penultimateRowIndex = (initialRowSelection.getIndex() - 1);
-                int penultimateColumnIndex = (initialColumnSelection.getIndex() - 1);
-                boolean validIndicesM = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
-                        middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
-                boolean validIndicesP = penultimateRowIndex >= 0 && penultimateRowIndex < Row.values().length &&
-                        penultimateColumnIndex >= 0 && penultimateColumnIndex < Column.values().length;
+
+                int penultimateRowIndex;
+                int penultimateColumnIndex;
+                if (middleColumnIndex == initialColumnSelection.getIndex()) {
+                    penultimateRowIndex = (initialRowSelection.getIndex() - 1);
+
+                    penultimateColumnIndex = middleColumnIndex;
+
+                } else {
+                    penultimateRowIndex = middleRowIndex;
+                    penultimateColumnIndex = (finalColumnSelection.getIndex() - 1);
+
+                }
 
                 Row middleRow = Row.getByIndex(middleRowIndex);
                 Column middleColumn = Column.getByIndex(middleColumnIndex);
                 Row penultimateRow = Row.getByIndex(penultimateRowIndex);
                 Column penultimateColumn = Column.getByIndex(penultimateColumnIndex);
 
-                if (validIndicesM && validIndicesP) {
-                    add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
-                    add(ShipStructure.CENTER, penultimateRow, penultimateColumn, selectShip);
+                boolean validIndicesM = middleRowIndex >= 0 && middleRowIndex < Row.values().length &&
+                        middleColumnIndex >= 0 && middleColumnIndex < Column.values().length;
+                boolean validIndicesP = penultimateRowIndex >= 0 && penultimateRowIndex < Row.values().length &&
+                        penultimateColumnIndex >= 0 && penultimateColumnIndex < Column.values().length;
+
+                if (!verificationPosition(middleRow, middleColumn)
+                        && !verificationPosition(penultimateRow, penultimateColumn)) {
+                    if (validIndicesM && validIndicesP) {
+                        add(ShipStructure.CENTER, middleRow, middleColumn, selectShip);
+                        add(ShipStructure.CENTER, penultimateRow, penultimateColumn, selectShip);
+                    }
+                } else {
+                    System.out.println("no posicionar en mitad o penultimo - big");
                 }
             }
             add(ShipStructure.STERN, finalRowSelection, finalColumnSelection, selectShip);
@@ -267,76 +284,92 @@ public class CoordinatesCtrl extends Coordinates {
         this.shipSize.setEnabled(false);
         this.iROw.setEnabled(false);
         this.iColumn.setEnabled(false);
+
+        System.out.println("row");
         final EnumList<Row> horizontal = (EnumList<Row>) possibleMovements(rInit, selectShip);
+        System.out.println("column");
         final EnumList<Column> vertical = (EnumList<Column>) possibleMovements(cInit, selectShip);
         this.fRow.setOptions(horizontal.getArrayList());
         this.fColumn.setOptions(vertical.getArrayList());
+
     }
 
     private EnumList<? extends Enum<?>> possibleMovements(Enum<?> rowOrColumn, Ship shipType) {
-        /*TODO: array que contega subarray que sea de tipo enumlist ARRAYLIST<MOMENTS.GETARRAYLIS>>
-         * ESAS OPCIONES SE DEBIRIAN MOSTRAR PARA SELECCIONAR LA POSICION FINAL QUE APAREZCA EN LA
-         * PANTALLA, PARA EVIATAR QUE SE AÑADA DE FORMA DIAGONAL SOLO TIENE QUE SALIR
-         * TOP, BOTTOM, LEFT, RIGHT
-         * 
-         * OR
-         * 
-         * QUE SOLO APREZCA LAS OPCIONES DE LAS COORDENAS PERO LA PALABRA TOP. BOTTOM. LEFT, RIGHT, PERO QUE 
-         * INTERNAMENTE SEPA QUE SON COLUMN Y ROW
-        */
-
-        /*
-         * TODO: CON RESPECTO A LOS ATAQUES CADA BOTON VA A LLAMAR A SINGLETON PARA EL ATTAQUE Y POR DEFUALT YA SE
-         * LE ENVIA COLUMN, ROW CON SU RESPECTIVA BOMBA, SE TIENE QUE CAMBIAR DE COLO, CREAR UN FUNCION EL A INTERFACE
-         * IGAME PARA QUE RETORNE EL ATAQUE Y ASI SE PUEDA COLOREAR
-         */
-
-         /*
-          * en cada socket debera haber una variable par confirmar que el createBoard tenga sus barcos en posicion
-          */
         EnumList movements = new EnumList<>();
         int index = (rowOrColumn instanceof Column) ? ((Column) rowOrColumn).getIndex()
                 : ((Row) rowOrColumn).getIndex();
+
+        // negative
+        int bigSizeL = (index - (Ship.BIG.getSize() - 1));
+        int mediumSizeL = (index - (Ship.MEDIUM.getSize() - 1));
+        int smallSizeL = (index - (Ship.SMALL.getSize() - 1));
+        // positive
+        int bigSizeP = (index + (Ship.BIG.getSize() - 1));
+        int mediumSizeP = (index + (Ship.MEDIUM.getSize() - 1));
+        int smallSizeP = (index + (Ship.SMALL.getSize() - 1));
+
         switch (index) {
             case 9:
-            //if index es igual mayor a column entonces que no se pueda poner de forma diagonal
                 if (shipType == Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.BIG.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, bigSizeL));
                 } else if (shipType == Ship.MEDIUM) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.MEDIUM.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, mediumSizeL));
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.SMALL.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, smallSizeL));
                 }
                 movements.addEnum(getByIndex(rowOrColumn, index));
                 break;
             case 0:
                 movements.addEnum(getByIndex(rowOrColumn, index));
                 if (shipType == Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.BIG.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, bigSizeP));
                 } else if (shipType == Ship.MEDIUM) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.MEDIUM.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, mediumSizeP));
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.SMALL.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, smallSizeP));
                 }
                 break;
             default:
                 if (shipType == Ship.BIG) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.BIG.getSize() - 1))));
-                    movements.addEnum(getByIndex(rowOrColumn, index));
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.BIG.getSize() - 1))));
+                    if (index == 1 || index == 2) {
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+                        movements.addEnum(getByIndex(rowOrColumn, bigSizeP));
+
+                    } else if (index == 7 || index == 8) {
+                        movements.addEnum(getByIndex(rowOrColumn, bigSizeL));
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+
+                    } else {
+                        movements.addEnum(getByIndex(rowOrColumn, bigSizeL));
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+                        movements.addEnum(getByIndex(rowOrColumn, bigSizeP));
+                    }
 
                 } else if (shipType == Ship.MEDIUM) {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.MEDIUM.getSize() - 1))));
-                    movements.addEnum(getByIndex(rowOrColumn, index));
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.MEDIUM.getSize() - 1))));
+                    if (index == 1) {
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+                        movements.addEnum(getByIndex(rowOrColumn, mediumSizeP));
+
+                    } else if (index == 8) {
+                        movements.addEnum(getByIndex(rowOrColumn, mediumSizeL));
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+
+                    } else {
+                        movements.addEnum(getByIndex(rowOrColumn, mediumSizeL));
+                        movements.addEnum(getByIndex(rowOrColumn, index));
+                        movements.addEnum(getByIndex(rowOrColumn, mediumSizeP));
+
+                    }
 
                 } else {
-                    movements.addEnum(getByIndex(rowOrColumn, (index - (Ship.SMALL.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, smallSizeL));
                     movements.addEnum(getByIndex(rowOrColumn, index));
-                    movements.addEnum(getByIndex(rowOrColumn, (index + (Ship.SMALL.getSize() - 1))));
+                    movements.addEnum(getByIndex(rowOrColumn, smallSizeP));
                 }
                 break;
         }
+
+        System.out.println(movements.getArrayList().toString());
         return movements;
     }
 

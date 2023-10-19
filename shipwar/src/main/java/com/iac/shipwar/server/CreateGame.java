@@ -68,7 +68,7 @@ public class CreateGame implements IGame {
             this.attackComponet = true;
             String text = "Enemy: " + receivedData.getRow().name() + " | " + receivedData.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -93,7 +93,7 @@ public class CreateGame implements IGame {
             this.attackComponet = false;
             String text = "     Yo: " + content.getRow().name() + " | " + content.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();

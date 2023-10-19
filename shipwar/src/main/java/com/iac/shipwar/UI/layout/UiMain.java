@@ -67,9 +67,9 @@ public class UiMain {
                 this.singleton.setDashboard(dashboard);
                 final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD),
                                 MainPanels.MYBOARD.getDisplayName(),
-                                "#114db1", "#FFFFFF");
+                                "#114db1", "#FFFFFF", false);
                 final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
-                                MainPanels.ENEMYBOARD.getDisplayName(), "#fef6cd", "#000000");
+                                MainPanels.ENEMYBOARD.getDisplayName(), "#fef6cd", "#000000", true);
                 final AttackCtrl attack = new AttackCtrl(uiBoardEnemy, dashboard);
                 final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard,
                                 this.panels.get(MainPanels.ENEMYBOARD));

@@ -21,6 +21,8 @@ public class Singleton {
     private Map<Row, Map<Column, ShipDeployed>> board = new HashMap<Row, Map<Column, ShipDeployed>>();
     private UiBoard myBoard;
     private UiDashboard dashboard;
+    private Boolean successfulAttack;
+
 
     public static Singleton getInstance() {
         if (instance == null) {
@@ -100,11 +102,6 @@ public class Singleton {
         }
     }
 
-    // funcion para decirle que se oculte el componente de ataque
-
-    // funcion para colorear si acete el ataque anterior de color rojo else color
-    // amrron claro
-
     public void receiveAttack(ShipDeployed sd) {
         System.out.println("\nrecibiste ataque del enenemigo");
         if (this.board.get(sd.getRow()).get(sd.getColumn()).getMarineElement() == TypeMarineElement.SHIP) {
@@ -113,10 +110,16 @@ public class Singleton {
             System.out.println("puntuacion: " + this.score + "/1000");
             getBoardRowColum(sd.getRow(), sd.getColumn());
             this.myBoard.changeColor(sd.getRow(), sd.getColumn(), "#Fc045b");
+            this.successfulAttack = true;
         } else {
             System.out.println("fallo la bomba");
+            this.successfulAttack = false;
         }
 
+    }
+
+    public boolean getSuccessfulAttack(){
+        return successfulAttack;
     }
 
     public void replaceShipDeployed(ShipDeployed newShipDeploy) {
