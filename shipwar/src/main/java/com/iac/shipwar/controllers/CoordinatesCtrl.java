@@ -197,12 +197,11 @@ public class CoordinatesCtrl extends Coordinates {
                 int penultimateColumnIndex;
                 if (middleColumnIndex == initialColumnSelection.getIndex()) {
                     penultimateRowIndex = (initialRowSelection.getIndex() - 1);
-
                     penultimateColumnIndex = middleColumnIndex;
 
                 } else {
                     penultimateRowIndex = middleRowIndex;
-                    penultimateColumnIndex = (finalColumnSelection.getIndex() - 1);
+                    penultimateColumnIndex = (middleColumnIndex + 1);
 
                 }
 
