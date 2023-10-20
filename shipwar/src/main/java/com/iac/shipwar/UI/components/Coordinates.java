@@ -24,7 +24,7 @@ public class Coordinates {
     protected Panel_ enemyPanel;
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected int shipCount = Ship.BIG.getNumber() + Ship.MEDIUM.getNumber() + Ship.SMALL.getNumber();
-    protected final String fontColor = "#A0A0A0A";
+    protected final String fontColor = "#FFFFFF";
     protected Options_<Ship> shipSize;
     protected Options_<Row> iROw;
     protected Options_<Column> iColumn;

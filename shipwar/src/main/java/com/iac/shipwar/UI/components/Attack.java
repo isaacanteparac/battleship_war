@@ -20,6 +20,7 @@ public class Attack {
     protected Options_<Row> rowOption;
     protected Options_<Column> columnOption;
     protected Button_ fireButton;
+    protected String colorText = "#FFFFFF";
 
     public Attack(UiBoard eb, UiDashboard ud) {
         this.enemyBoard = eb;
@@ -36,8 +37,12 @@ public class Attack {
         this.rowOption.pureEnum(Row.class);
         this.columnOption.pureEnum(Column.class);
 
-        panelRow.addComponent(new Text_("Fila", 100).getLabel());
-        panelColumn.addComponent(new Text_("Columna", 100).getLabel());
+        Text_ tRow = new Text_("Fila", 100);
+        Text_ tColumn = new Text_("Columna", 100);
+        tRow.setColor(this.colorText);
+        tColumn.setColor(this.colorText);
+        panelRow.addComponent(tRow.getLabel());
+        panelColumn.addComponent(tColumn.getLabel());
         this.rowOption.addPanel(panelRow);
         this.columnOption.addPanel(panelColumn);
 

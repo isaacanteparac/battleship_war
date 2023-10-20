@@ -161,7 +161,7 @@ public class CoordinatesCtrl extends Coordinates {
             shipSize.getComboBox().removeItemAt(selectedIndex);
             if (shipSize.getComboBox().getItemCount() == 0) {
                 dashboard.getBox(Dashboard.COORDINATES).visible(false);
-                // dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
+                dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
                 dashboard.getBox(Dashboard.SHOOTINGLOG).visible(true);
                 dashboard.getBox(Dashboard.SCORE).visible(true);
                 enemyPanel.visible(true);

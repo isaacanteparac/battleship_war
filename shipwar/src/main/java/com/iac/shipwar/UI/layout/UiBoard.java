@@ -38,7 +38,7 @@ public class UiBoard {
         this.attackbuttonAction = attackbuttonA;
         title(title);
 
-        Panel_ subContainer = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 455, 5,
+        Panel_ subContainer = new Panel_(new PanelCharacteristic(this.container.getSizeWidthComponent(), 600, 5,
                 0, 50, 5,
                 0, 0,
                 "#FFFFFF", this.container.getPanel()));
@@ -64,7 +64,7 @@ public class UiBoard {
     }
 
     private Panel_ createButton(Row row, Panel_ subContainer) {
-        Panel_ box = new Panel_(new PanelCharacteristic(620, 40, 0,
+        Panel_ box = new Panel_(new PanelCharacteristic(620, 55, 0,
                 0, 0, 5,
                 0, 0,
                 "#000000", this.container.getPanel()));
@@ -94,7 +94,7 @@ public class UiBoard {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if (singleton.getGameInstance().getAttackComponet()) {
-                    // getContainer().visible(true);
+                    getContainer().visible(true);
                     ShipDeployed shipDeath = new ShipDeployed(TypeMarineElement.BOMB, r, c);
                     shipDeath.setVital(VitalConditions.DEAD);
                     singleton.getGameInstance().sendData(shipDeath);

@@ -37,7 +37,7 @@ public class UiMain {
 
         private void generatePanelsMain() {
                 this.windows = new Window(Ui.BOARD_TITLE.getStringValue(), Ui.WINDOW_BOARD_WIDTH.getIntValue(),
-                                Ui.WINDOW_BOARD_HEIGHT.getIntValue(), true);
+                                Ui.WINDOW_BOARD_HEIGHT.getIntValue(), false);
                 this.windows.getFrame().setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
                 this.windows.getFrame().setVisible(false);
                 this.windows.getFrame().setLocationRelativeTo(null);
@@ -67,9 +67,9 @@ public class UiMain {
                 this.singleton.setDashboard(dashboard);
                 final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD),
                                 MainPanels.MYBOARD.getDisplayName(),
-                                "#114db1", "#FFFFFF", false);
+                                "#1b1c1c", "#FFFFFF", false);
                 final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
-                                MainPanels.ENEMYBOARD.getDisplayName(), "#fef6cd", "#000000", true);
+                                MainPanels.ENEMYBOARD.getDisplayName(), "#585858", "#ffffff", false);
                 final AttackCtrl attack = new AttackCtrl(uiBoardEnemy, dashboard);
                 final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard,
                                 this.panels.get(MainPanels.ENEMYBOARD));

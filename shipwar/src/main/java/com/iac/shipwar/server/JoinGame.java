@@ -111,9 +111,9 @@ public class JoinGame implements IGame {
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
             this.attackComponet = true;
-            //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             String text = "Enemy: " + receivedData.getRow().name() + " | " + receivedData.getColumn().name();
-            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
+            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#Fc045b");
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -134,9 +134,9 @@ public class JoinGame implements IGame {
             content.printDetails("MIO");
             dtSocket.send(dtPacket);
             this.attackComponet = false;
-            String text = "     Yo: " + content.getRow().name() + " | " + content.getColumn().name();
-            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG));
-            //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            String text = "Yo: " + content.getRow().name() + "" + content.getColumn().name();
+            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#045bfc");
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();

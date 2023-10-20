@@ -23,7 +23,7 @@ public class Setting {
     protected Map<String, Panel_> panels = new HashMap<String, Panel_>();
     protected Text_ textScreen;
     protected JTextField inputPort;
-    protected final String fontColor = "#A0A0A0A";
+    protected final String fontColor = "#c3f52c";
 
 
     public Setting(UiDashboard ud, UiBoard myBoard) {

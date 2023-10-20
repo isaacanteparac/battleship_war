@@ -22,9 +22,9 @@ public class UiDashboard {
     protected final int fontSizeSubtittle = 18;
     protected final int fontSizeTitle = 20;
     protected final int boxLabelSize = 60;
-    protected final String bgBox = "#Dbe8fe";
-    protected final String fontColor = "#A0A0A0A";
-    protected final String titleFontColor = "#000000";
+    protected final String bgBox = "#000000";
+    protected final String fontColor = "#FFFFFF";
+    protected final String titleFontColor = "#FFFFFF";
     protected final int transparencyBox = 255;
 
     public UiDashboard(Panel_ p) {
