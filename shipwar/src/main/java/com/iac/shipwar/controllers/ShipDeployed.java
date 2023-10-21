@@ -17,6 +17,7 @@ public class ShipDeployed implements Serializable {
     private Column column;
     private VitalConditions vital;
     private Ship ship;
+    private int score;
     private Map<ShipStructure, ShipDeployed> positions = new HashMap<ShipStructure, ShipDeployed>();
 
     public ShipDeployed(TypeMarineElement marineElement, Row row, Column column) {
@@ -27,6 +28,14 @@ public class ShipDeployed implements Serializable {
 
     public TypeMarineElement getMarineElement() {
         return marineElement;
+    }
+
+    public void setScore(int newScore){
+        this.score = newScore;
+    }
+
+    public int getScore(){
+        return this.score;
     }
 
     public void setMarineElement(TypeMarineElement marineElement) {

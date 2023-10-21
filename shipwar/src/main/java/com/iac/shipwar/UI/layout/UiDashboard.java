@@ -104,7 +104,7 @@ public class UiDashboard {
 
         this.texts.put(Modifier.MUTABLE, new HashMap<Dashboard, Text_>() {
             {
-                put(Dashboard.SCORE, new Text_("1000 de 1000", container.getSizeWidthComponent()));
+                put(Dashboard.SCORE, new Text_("200 de 200", container.getSizeWidthComponent()));
             }
         });
     }

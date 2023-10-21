@@ -26,9 +26,10 @@ public class CreateGame implements IGame {
     private DatagramPacket dtPacket;
     private InetAddress address;
     private Boolean serverListening;
-    private Boolean attackComponet = false;
+    private Boolean attackComponent = false;
     protected final Singleton singleton = Singleton.getInstance();
     private UiDashboard dashboard;
+    protected int counter = 0;
 
     public CreateGame(UiDashboard dashboard) throws Exception {
         this.dashboard = dashboard;
@@ -65,10 +66,17 @@ public class CreateGame implements IGame {
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
-            this.attackComponet = true;
-            String text = "Enemy: " + receivedData.getRow().name() + " | " + receivedData.getColumn().name();
-            addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#Fc045b");
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            this.attackComponent = true;
+            
+            if (counter == 0) {
+                String text = "Enemy: " + receivedData.getRow().name() + " " + receivedData.getColumn().name();
+                addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#Fc045b");
+                this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
+                counter += 1;
+            } else {
+                counter = 0;
+            }
+
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -90,10 +98,10 @@ public class CreateGame implements IGame {
             this.dtPacket = new DatagramPacket(this.buffer, this.buffer.length, this.address, this.senderPort);
             content.printDetails("MIO");
             this.dtSocket.send(dtPacket);
-            this.attackComponet = false;
-            String text = "     Yo: " + content.getRow().name() + " | " + content.getColumn().name();
+            this.attackComponent = false;
+            String text = "Yo: " + content.getRow().name() + " " + content.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#045bfc");
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();
@@ -107,8 +115,8 @@ public class CreateGame implements IGame {
     }
 
     @Override
-    public boolean getAttackComponet() {
-        return attackComponet;
+    public boolean getAttackComponent() {
+        return attackComponent;
     }
 
     @Override

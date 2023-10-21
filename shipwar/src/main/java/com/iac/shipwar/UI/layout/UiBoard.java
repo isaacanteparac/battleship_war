@@ -80,7 +80,7 @@ public class UiBoard {
             buttons.put(c, b);
             box.addComponent(b.geButton());
             if (this.attackbuttonAction) {
-                addActionButton(row, c, b.geButton());
+                fireButtonAction(b.geButton(), row, c );
             }
         }
         box.activateGrip(SubcomponentOrientation.HORIZONTAL_W);
@@ -89,25 +89,29 @@ public class UiBoard {
         return box;
     }
 
-    private void addActionButton(Row r, Column c, JButton button) {
+    private void fireButtonAction(JButton button, Row row, Column column) {
         button.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (singleton.getGameInstance().getAttackComponet()) {
+                if (singleton.getGameInstance().getAttackComponent()) {
                     getContainer().visible(true);
-                    ShipDeployed shipDeath = new ShipDeployed(TypeMarineElement.BOMB, r, c);
-                    shipDeath.setVital(VitalConditions.DEAD);
-                    singleton.getGameInstance().sendData(shipDeath);
+                    burningShot(row, column);
                     if (singleton.getSuccessfulAttack()) {
-                        changeColor(r, c, "#Fc045b");
-
+                        changeColor(row, column, "#Fc045b");
                     } else {
-                        changeColor(r, c, "#A29973");
-
+                        changeColor(row, column, "#000000");
                     }
                 }
+
             }
+
         });
+    }
+
+    private void burningShot(Row row, Column column) {
+        ShipDeployed shipDeath = new ShipDeployed(TypeMarineElement.BOMB, row, column);
+        shipDeath.setVital(VitalConditions.DEAD);
+        singleton.getGameInstance().sendData(shipDeath);
     }
 
     public void changeColor(Row r, Column c, String h) {

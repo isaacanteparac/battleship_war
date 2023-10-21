@@ -161,7 +161,7 @@ public class CoordinatesCtrl extends Coordinates {
             shipSize.getComboBox().removeItemAt(selectedIndex);
             if (shipSize.getComboBox().getItemCount() == 0) {
                 dashboard.getBox(Dashboard.COORDINATES).visible(false);
-                dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponet());
+                dashboard.getBox(Dashboard.ATTACK).visible(this.singleton.getGameInstance().getAttackComponent());
                 dashboard.getBox(Dashboard.SHOOTINGLOG).visible(true);
                 dashboard.getBox(Dashboard.SCORE).visible(true);
                 enemyPanel.visible(true);
@@ -283,10 +283,7 @@ public class CoordinatesCtrl extends Coordinates {
         this.shipSize.setEnabled(false);
         this.iROw.setEnabled(false);
         this.iColumn.setEnabled(false);
-
-        System.out.println("row");
         final EnumList<Row> horizontal = (EnumList<Row>) possibleMovements(rInit, selectShip);
-        System.out.println("column");
         final EnumList<Column> vertical = (EnumList<Column>) possibleMovements(cInit, selectShip);
         this.fRow.setOptions(horizontal.getArrayList());
         this.fColumn.setOptions(vertical.getArrayList());
@@ -367,8 +364,6 @@ public class CoordinatesCtrl extends Coordinates {
                 }
                 break;
         }
-
-        System.out.println(movements.getArrayList().toString());
         return movements;
     }
 

@@ -6,12 +6,15 @@ import java.util.Map;
 import javax.swing.JFrame;
 
 import com.iac.shipwar.UI.widgets.Panel_;
+import com.iac.shipwar.UI.widgets.Text_;
 import com.iac.shipwar.UI.widgets.Window;
 import com.iac.shipwar.controllers.AttackCtrl;
 import com.iac.shipwar.controllers.CoordinatesCtrl;
 import com.iac.shipwar.controllers.SettingCtrl;
 import com.iac.shipwar.controllers.Singleton;
 import com.iac.shipwar.models.dataclass.PanelCharacteristic;
+import com.iac.shipwar.models.enums.AlingText;
+import com.iac.shipwar.models.enums.FontType;
 import com.iac.shipwar.models.enums.MainPanels;
 import com.iac.shipwar.models.enums.Ui;
 
@@ -65,16 +68,30 @@ public class UiMain {
         private void generateComponents() {
                 final UiDashboard dashboard = new UiDashboard(this.panels.get(MainPanels.INFORMATION));
                 this.singleton.setDashboard(dashboard);
+
+                //tableros
                 final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD),
                                 MainPanels.MYBOARD.getDisplayName(),
                                 "#1b1c1c", "#FFFFFF", false);
                 final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
                                 MainPanels.ENEMYBOARD.getDisplayName(), "#585858", "#ffffff", false);
-                final AttackCtrl attack = new AttackCtrl(uiBoardEnemy, dashboard);
-                final CoordinatesCtrl coordinates = new CoordinatesCtrl(dashboard, uiBoard,
+                //componentes
+                new AttackCtrl(uiBoardEnemy, dashboard);
+                new CoordinatesCtrl(dashboard, uiBoard,
                                 this.panels.get(MainPanels.ENEMYBOARD));
-                final SettingCtrl settingGame = new SettingCtrl(dashboard, uiBoard, this.windows);
+                new SettingCtrl(dashboard, uiBoard, this.windows);
+                final Text_ twin = new Text_(".....", Ui.WINDOW_BOARD_WIDTH.getIntValue());
+                twin.setColor("#FFFFFF");
+                twin.setAling(AlingText.CENTER);
+                twin.setSize(200);
+                twin.setType(FontType.BOLD);
+                twin.getLabel().setVisible(false);
+                windows.getPanel().add(twin.getLabel());
+                
+                //control
                 this.singleton.setMyBoard(uiBoard);
+                this.singleton.setEnemyBoard(uiBoardEnemy);
+                this.singleton.setWinnertext(twin);
                 this.panels.get(MainPanels.ENEMYBOARD).visible(false);
         }
 

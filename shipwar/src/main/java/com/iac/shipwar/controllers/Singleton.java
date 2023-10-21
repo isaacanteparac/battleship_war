@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.iac.shipwar.UI.layout.UiBoard;
 import com.iac.shipwar.UI.layout.UiDashboard;
+import com.iac.shipwar.UI.widgets.Text_;
 import com.iac.shipwar.interfaces.IGame;
 import com.iac.shipwar.models.enums.Column;
 import com.iac.shipwar.models.enums.Dashboard;
@@ -17,12 +18,13 @@ public class Singleton {
 
     private static Singleton instance;
     private IGame gameInstance;
-    private int score = 1000;
+    private int score = 200;
     private Map<Row, Map<Column, ShipDeployed>> board = new HashMap<Row, Map<Column, ShipDeployed>>();
     private UiBoard myBoard;
+    private UiBoard enemyBoard;
     private UiDashboard dashboard;
-    private Boolean successfulAttack;
-
+    private Boolean successfulAttack = false;
+    private Text_ winnertext;
 
     public static Singleton getInstance() {
         if (instance == null) {
@@ -38,9 +40,15 @@ public class Singleton {
     private void decreaseScore() {
         if (this.score > 0) {
             this.score -= 10;
-            this.dashboard.updateTextsModifier(Dashboard.SCORE,this.score+" de 1000");
+            this.dashboard.updateTextsModifier(Dashboard.SCORE, this.score + " de 200");
         } else {
-            System.out.println(">>>>>>> ganaste <<<<<");
+            System.out.println("peprdiste imbecil de mierda, hasta para esto eres manco jo**ta");
+            this.winnertext.setText("Perdiste :(");
+            this.enemyBoard.getContainer().visible(false);
+            this.myBoard.getContainer().visible(false);
+            this.dashboard.getBox(Dashboard.ATTACK).visible(false);
+            this.winnertext.getLabel().setVisible(true);
+
         }
     }
 
@@ -50,6 +58,15 @@ public class Singleton {
 
     public void setMyBoard(UiBoard b) {
         this.myBoard = b;
+    }
+
+    public void setEnemyBoard(UiBoard b) {
+        this.enemyBoard = b;
+
+    }
+
+    public void setWinnertext(Text_ t) {
+        this.winnertext = t;
     }
 
     public void serverActive(boolean create, String http) {
@@ -107,7 +124,7 @@ public class Singleton {
         if (this.board.get(sd.getRow()).get(sd.getColumn()).getMarineElement() == TypeMarineElement.SHIP) {
             replaceShipDeployed(sd);
             decreaseScore();
-            System.out.println("puntuacion: " + this.score + "/1000");
+            System.out.println("puntuacion: " + this.score + "/200");
             getBoardRowColum(sd.getRow(), sd.getColumn());
             this.myBoard.changeColor(sd.getRow(), sd.getColumn(), "#Fc045b");
             this.successfulAttack = true;
@@ -118,7 +135,7 @@ public class Singleton {
 
     }
 
-    public boolean getSuccessfulAttack(){
+    public boolean getSuccessfulAttack() {
         return successfulAttack;
     }
 

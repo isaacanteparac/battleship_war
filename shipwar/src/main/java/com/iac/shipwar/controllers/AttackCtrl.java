@@ -33,9 +33,8 @@ public class AttackCtrl extends Attack {
                 burningShot(selectedRow, selectedColumn);
                 if (singleton.getSuccessfulAttack()) {
                     enemyBoard.changeColor(selectedRow, selectedColumn, "#Fc045b");
-
                 } else {
-                    enemyBoard.changeColor(selectedRow, selectedColumn, "#A29973");
+                    enemyBoard.changeColor(selectedRow, selectedColumn, "#000000");
 
                 }
             }

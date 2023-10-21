@@ -14,7 +14,7 @@ public interface  IGame {
     ShipDeployed receiveData();
     DatagramPacket sendData(ShipDeployed content);
     boolean getServerListening();
-    boolean getAttackComponet();
+    boolean getAttackComponent();
     default void addText(String t, Panel_ panelRegister, String color){
         Text_ textAttack = new Text_(t, panelRegister.getSizeWidthComponent());
         textAttack.setColor(color);

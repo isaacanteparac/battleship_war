@@ -26,7 +26,7 @@ public class JoinGame implements IGame {
     private byte[] buffer;
     private DatagramPacket dtPacket;
     private Boolean serverListening;
-    private Boolean attackComponet = true;
+    private Boolean attackComponent = true;
     private UiDashboard dashboard;
 
     protected final Singleton singleton = Singleton.getInstance();
@@ -110,9 +110,9 @@ public class JoinGame implements IGame {
             ObjectInputStream in = new ObjectInputStream(bis);
             ShipDeployed receivedData = (ShipDeployed) in.readObject();
             this.singleton.receiveAttack(receivedData);
-            this.attackComponet = true;
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
-            String text = "Enemy: " + receivedData.getRow().name() + " | " + receivedData.getColumn().name();
+            this.attackComponent = true;
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
+            String text = "Enemy: " + receivedData.getRow().name() + " " + receivedData.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#Fc045b");
             return receivedData;
         } catch (IOException | ClassNotFoundException e) {
@@ -133,10 +133,11 @@ public class JoinGame implements IGame {
                     this.port);
             content.printDetails("MIO");
             dtSocket.send(dtPacket);
-            this.attackComponet = false;
-            String text = "Yo: " + content.getRow().name() + "" + content.getColumn().name();
+            dtSocket.send(dtPacket);
+            this.attackComponent = false;
+            String text = "Yo: " + content.getRow().name() + " " + content.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#045bfc");
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponet);
+            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();
@@ -146,8 +147,8 @@ public class JoinGame implements IGame {
     }
 
     @Override
-    public boolean getAttackComponet() {
-        return attackComponet;
+    public boolean getAttackComponent() {
+        return attackComponent;
     }
 
     public void setServerListening(boolean open) {
