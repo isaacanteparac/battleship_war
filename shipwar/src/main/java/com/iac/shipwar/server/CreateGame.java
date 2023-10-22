@@ -71,7 +71,7 @@ public class CreateGame implements IGame {
             if (counter == 0) {
                 String text = "Enemy: " + receivedData.getRow().name() + " " + receivedData.getColumn().name();
                 addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#Fc045b");
-                this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
+                //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
                 counter += 1;
             } else {
                 counter = 0;
@@ -101,7 +101,7 @@ public class CreateGame implements IGame {
             this.attackComponent = false;
             String text = "Yo: " + content.getRow().name() + " " + content.getColumn().name();
             addText(text, dashboard.getBox(Dashboard.SHOOTINGLOG), "#045bfc");
-            this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
+            //this.dashboard.getBox(Dashboard.ATTACK).visible(this.attackComponent);
             return dtPacket;
         } catch (Exception e) {
             e.printStackTrace();

@@ -74,7 +74,7 @@ public class UiMain {
                                 MainPanels.MYBOARD.getDisplayName(),
                                 "#1b1c1c", "#FFFFFF", false);
                 final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
-                                MainPanels.ENEMYBOARD.getDisplayName(), "#585858", "#ffffff", false);
+                                MainPanels.ENEMYBOARD.getDisplayName(), "#585858", "#ffffff", true);
                 //componentes
                 new AttackCtrl(uiBoardEnemy, dashboard);
                 new CoordinatesCtrl(dashboard, uiBoard,
