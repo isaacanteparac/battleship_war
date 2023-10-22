@@ -1,6 +1,5 @@
 package com.iac.shipwar;
 
-
 import com.iac.shipwar.UI.layout.UiMain;
 import com.iac.shipwar.controllers.Singleton;
 
@@ -14,7 +13,7 @@ public class App {
 
         Singleton singleton = Singleton.getInstance();
         singleton.createRowsAndColumns();
-        final UiMain ui = new UiMain();
+        new UiMain();
 
     }
 }

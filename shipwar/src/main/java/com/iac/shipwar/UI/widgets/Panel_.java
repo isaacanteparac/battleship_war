@@ -39,6 +39,15 @@ public class Panel_ {
         this.size();
     }
 
+    public void changeColorBorder(String h) {
+            panel.setBorder(BorderFactory.createLineBorder(Color.decode(h), 5));
+    }
+
+    public void noBorder(){
+        panel.setBorder(null);
+    }
+    
+
     private void size() {
         this.panel.setOpaque(false);
         this.panel.setPreferredSize(new Dimension(this.characteristic.width(), this.characteristic.height()));

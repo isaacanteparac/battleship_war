@@ -41,14 +41,14 @@ public class Singleton {
         if (this.score > 0) {
             this.score -= 10;
             this.dashboard.updateTextsModifier(Dashboard.SCORE, this.score + " de 200");
-        } else {
-            System.out.println("peprdiste imbecil de mierda, hasta para esto eres manco jo**ta");
-            this.winnertext.setText("Perdiste :(");
-            this.enemyBoard.getContainer().visible(false);
-            this.myBoard.getContainer().visible(false);
-            this.dashboard.getBox(Dashboard.ATTACK).visible(false);
-            this.winnertext.getLabel().setVisible(true);
-
+            if (this.score == 0) {
+                String loser = "Perdiste manc@ :(";
+                System.out.println(loser);
+                this.winnertext.setText(loser);
+                this.enemyBoard.getContainer().visible(false);
+                this.myBoard.getContainer().visible(false);
+                this.winnertext.getLabel().setVisible(true);
+            }
         }
     }
 
@@ -132,6 +132,7 @@ public class Singleton {
             System.out.println("fallo la bomba");
             this.successfulAttack = false;
         }
+        this.enemyBoard.getContainer().changeColorBorder("#55de0a");
 
     }
 

@@ -39,7 +39,7 @@ public class UiDashboard {
         addBox(Modifier.INMUTABLE, Dashboard.SHIP, 210);
         addBox(Modifier.INMUTABLE, Dashboard.ATTACK, 155);
         addBox(Modifier.INMUTABLE, Dashboard.COORDINATES, 250);
-        addBox(Modifier.INMUTABLE, Dashboard.SHOOTINGLOG, 250);
+        addBox(Modifier.INMUTABLE, Dashboard.SHOOTINGLOG, 280);
 
         this.box.get(Dashboard.ATTACK).visible(false);
         this.box.get(Dashboard.SCORE).visible(false);

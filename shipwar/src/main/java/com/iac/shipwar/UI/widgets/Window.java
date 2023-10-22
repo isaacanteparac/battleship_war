@@ -31,7 +31,7 @@ public class Window implements IProperties {
   private void generateWindow() {
     this.size_(this.frame, this.width, this.height);
     this.size_(this.panelMain, this.width, this.height);
-    this.background_(this.panelMain, "#181a1b");
+    this.background_(this.panelMain, "#FFFFFF");
     this.frame.add(this.panelMain);
     this.frame.setResizable(false);
     this.frame.setVisible(true);

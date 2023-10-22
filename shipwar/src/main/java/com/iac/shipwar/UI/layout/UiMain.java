@@ -69,10 +69,11 @@ public class UiMain {
                 final UiDashboard dashboard = new UiDashboard(this.panels.get(MainPanels.INFORMATION));
                 this.singleton.setDashboard(dashboard);
 
-                //tableros
+                //tablero mio
                 final UiBoard uiBoard = new UiBoard(this.panels.get(MainPanels.MYBOARD),
                                 MainPanels.MYBOARD.getDisplayName(),
                                 "#1b1c1c", "#FFFFFF", false);
+                //tablero enemigo
                 final UiBoard uiBoardEnemy = new UiBoard(this.panels.get(MainPanels.ENEMYBOARD),
                                 MainPanels.ENEMYBOARD.getDisplayName(), "#585858", "#ffffff", true);
                 //componentes
@@ -80,10 +81,10 @@ public class UiMain {
                 new CoordinatesCtrl(dashboard, uiBoard,
                                 this.panels.get(MainPanels.ENEMYBOARD));
                 new SettingCtrl(dashboard, uiBoard, this.windows);
-                final Text_ twin = new Text_(".....", Ui.WINDOW_BOARD_WIDTH.getIntValue());
-                twin.setColor("#FFFFFF");
+                final Text_ twin = new Text_("...", Ui.WINDOW_BOARD_WIDTH.getIntValue());
+                twin.setColor("#000000");
                 twin.setAling(AlingText.CENTER);
-                twin.setSize(200);
+                twin.setSize(100);
                 twin.setType(FontType.BOLD);
                 twin.getLabel().setVisible(false);
                 windows.getPanel().add(twin.getLabel());
@@ -92,7 +93,11 @@ public class UiMain {
                 this.singleton.setMyBoard(uiBoard);
                 this.singleton.setEnemyBoard(uiBoardEnemy);
                 this.singleton.setWinnertext(twin);
+
                 this.panels.get(MainPanels.ENEMYBOARD).visible(false);
+                   
+
+
         }
 
 

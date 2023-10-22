@@ -95,6 +95,7 @@ public class UiBoard {
             public void actionPerformed(ActionEvent e) {
                 if (singleton.getGameInstance().getAttackComponent()) {
                     getContainer().visible(true);
+                    container.noBorder();
                     burningShot(row, column);
                     if (singleton.getSuccessfulAttack()) {
                         changeColor(row, column, "#Fc045b");
